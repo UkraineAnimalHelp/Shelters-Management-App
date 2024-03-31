@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         home: Builder(
           builder: (context) {
             // Use Future.microtask to delay navigation until after the build method completes
-            Future.delayed(const Duration(seconds: 10)).then((_) {
+            Future.delayed(const Duration(seconds: 2)).then((_) {
               var authProvider =
                   Provider.of<AuthenticationProvider>(context, listen: false);
               if (authProvider.user != null) {

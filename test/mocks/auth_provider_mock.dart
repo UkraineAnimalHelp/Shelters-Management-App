@@ -3,7 +3,7 @@ import 'package:google_sign_in_mocks/google_sign_in_mocks.dart';
 import 'package:mockito/mockito.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:uah_shelters/src/services/api/auth/interface.dart';
-import 'package:uah_shelters/src/model/employee.dart';
+import 'package:uah_shelters/src/models/employee.dart';
 
 // A Mock class using Mockito package
 class MockFirebaseAuthService extends Mock implements IAuthService {

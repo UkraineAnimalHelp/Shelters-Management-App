@@ -1,0 +1,72 @@
+
+name: "CI"
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - dev
+      - master
+  push:
+    branches:
+      - dev
+      - master
+
+jobs:
+  test:
+    name: 🧪 Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: ⬇️ Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: ⚙️ Install lcov
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install lcov
+
+      - name: ⚙️ Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: ⚙️ Install Dependencies
+        run: flutter pub get
+
+      - name: ⚙️ Test flutter app
+        id: test
+        run: |
+          if flutter test --coverage; then
+            echo "Tests passed"
+            echo "teststatus=Passed" >> $GITHUB_OUTPUT
+            echo "testcolor=green" >> $GITHUB_OUTPUT
+          else
+            echo "Tests failed"
+            echo "teststatus=Failed" >> $GITHUB_OUTPUT
+            echo "testcolor=red" >> $GITHUB_OUTPUT
+          fi
+          COVERAGE=$(lcov -q --remove ./coverage/lcov.info 'lib/src/constants/**' 'lib/src/model/**' --output filter.lcov && lcov --summary filter.lcov | grep 'lines......:' | awk '{print $2}')
+          echo "coverage=$COVERAGE" >> $GITHUB_OUTPUT
+        continue-on-error: true
+
+      - name: Test badge
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: d796236332509ed40d5172b30466059a
+          filename: test.json
+          label: Tests
+          message:  ${{ steps.test.outputs.teststatus }}
+          color: ${{ steps.test.outputs.testcolor }}
+
+      - name: Coverage badge
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: "ca3186e27122a0bb967bff296a43ddc9"
+          filename: coverage.json
+          label: Coverage
+          message: ${{ steps.test.outputs.coverage }}
+          color: green

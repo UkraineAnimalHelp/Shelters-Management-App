@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:uah_shelters/src/model/employee.dart';
+import 'package:uah_shelters/src/models/employee.dart';
 import 'package:uah_shelters/src/services/api/auth/interface.dart';
 
 class AuthenticationProvider extends ChangeNotifier {

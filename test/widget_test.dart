@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 import 'mocks/auth_provider_mock.dart';
 import 'package:uah_shelters/src/providers/auth_provider.dart';
-import 'package:uah_shelters/src/constants/constants.dart';
 import 'package:uah_shelters/src/app.dart';
 
 void main() {
@@ -24,6 +23,7 @@ void main() {
     );
 
     // Waiting splash screen to finish
+    await tester.pump(const Duration(seconds: 2)); // Adjust the time as necessary
     await tester.pumpAndSettle(); 
 
     await tester.tap(find.byType(ElevatedButton));

@@ -1,4 +1,6 @@
 # Animal Shelters Management App
+![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/creotiv/d796236332509ed40d5172b30466059a/raw/test.json)
+![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/creotiv/ca3186e27122a0bb967bff296a43ddc9/raw/coverage.json)
 
 We are creating this app to help animal shelters in Ukraine optimize their work,
 mimize amount of fails due to big amount of animals to work with and make their

@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:uah_shelters/src/model/employee.dart';
+import 'package:uah_shelters/src/models/employee.dart';
 import 'interface.dart';
 
 class FirebaseAuthService implements IAuthService {
