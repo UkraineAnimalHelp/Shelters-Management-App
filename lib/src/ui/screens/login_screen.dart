@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:provider/provider.dart';
-import 'package:uah_shelters/src/constants/constants.dart';
+import 'package:uah_shelters/src/constants/app_router.gr.dart';
 import 'package:uah_shelters/src/providers/auth_provider.dart';
 
+@RoutePage()
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
@@ -27,7 +29,8 @@ class LoginScreen extends StatelessWidget {
               // After successful sign-in, the state change will automatically
               // be handled by the provider's listener in MyApp
               if (authProvider.user != null) {
-                Navigator.pushReplacementNamed(context, Routes.home);
+                AutoRouter.of(context).push(const HomeRoute());
+                // Navigator.pushReplacementNamed(context, Routes.home);
               }
             } catch (e) {
               scaffoldMessenger.showSnackBar(

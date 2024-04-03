@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:provider/provider.dart';
-import 'package:uah_shelters/src/constants/constants.dart';
+import 'package:uah_shelters/src/constants/app_router.gr.dart';
 import 'package:uah_shelters/src/providers/auth_provider.dart';
 
+@RoutePage()
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.title});
+  const HomeScreen({super.key});
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -14,8 +16,6 @@ class HomeScreen extends StatefulWidget {
   // case the title) provided by the parent (in this case the App widget) and
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
-
-  final String title;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -53,9 +53,9 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: const Icon(Icons.logout),
             onPressed: () async {
               await authProvider.signOut();
-
-              Navigator.pushNamedAndRemoveUntil(
-                  context, '/login', (route) => false);
+              AutoRouter.of(context).replaceAll([
+                const LoginRoute(),
+              ]);
             },
           ),
         ],
@@ -65,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         // Here we take the value from the HomeScreen object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: const Text("Animal Manager"),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it

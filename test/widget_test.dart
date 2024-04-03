@@ -18,7 +18,7 @@ void main() {
             create: (_) => authProvider,
           ),
         ],
-        child: const MyApp(),
+        child: MyApp(),
       ),
     );
 
@@ -32,7 +32,7 @@ void main() {
     // Verify the state or behavior
     expect(authProvider.user, isNotNull);
 
-    expect(find.text('Flutter Demo Home Page'), findsOneWidget);
+    expect(find.text('Animal Manager'), findsOneWidget);
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
