@@ -18,14 +18,20 @@ where modifying treatment time cant change already finished previous tasks.
     }
 } }%%
 flowchart LR;
+    style Stuff fill:#e3b600,stroke:#333,color:#333,stroke-width:4px
+    style GroupRights fill:#e3b600,stroke:#333,color:#333,stroke-width:4px
+    style AssignToOrg fill:#e3b600,stroke:#333,color:#333,stroke-width:4px
+    style MakePDF fill:#e3b600,stroke:#333,color:#333,stroke-width:4px
+
+    A[Open App] -->|Google Login| Register(Register Employee)-->RegisterOrg(Register Organization)--> Home(Home)
+    Register(Register Employee)-->AssignToOrg(Version2: Join Organization)-->|Approved| Home(Home)
     A[Open App] -->|Google Login| Home(Home)
+    A[Open App] -->|Local Login| Home(Home)
     Home --> Tasks(Today tasks: Selected)
     Home --> Animals(Animals)
     Home --> Knowledge(Knowledge base)
-    Home --> SheltersMngmt(Version2: Shelters Mngmt)
+    Home --> SheltersMngmt(Shelters Mngmt)
     Home --> UserSettings(User Settings)-->UpdateUserSettings[Update avatar,name,phone]
-
-    style SheltersMngmt fill:#e3b600,stroke:#333,color:#333,stroke-width:4px
 
     Tasks-->Task(Task)
     Task-->Done{{Done}}
@@ -44,15 +50,12 @@ flowchart LR;
     AnimalProfile-->AnimalGallery(Animal gallery)-->CRUDAnimalGallery{{CRUD}}
     AnimalProfile-->MakePDF(Version2: Convert profile to PDF)-->Generate{{Generate}}
 
-    style MakePDF fill:#e3b600,stroke:#333,color:#333,stroke-width:4px
-
-
     Knowledge-->SearchInfo{{Search Info}}
     Knowledge-->CRUDKnowledge{{CRUD}}
 
     SheltersMngmt-->Shelters(Shelters)-->CRUDShelters{{CRUD}}
-    SheltersMngmt-->Stuff(Stuff)-->CRUDStuff{{CRUD}}
-    Stuff(Stuff)-->AssingGroups{{Assing to Groups}}
-    Stuff(Stuff)-->AssingShelters{{Assing to Shelters}}
-    SheltersMngmt-->GroupRights(Group Rights)-->CRUDGroupRights{{CRUD}}
+    SheltersMngmt-->Stuff(Version2: Stuff)-->CRUDStuff{{CRUD}}
+    Stuff(Version2: Stuff)-->AssingGroups{{Assing to Groups}}
+    Stuff(Version2: Stuff)-->AssingShelters{{Assing to Shelters}}
+    SheltersMngmt-->GroupRights(Version2: Group Rights)-->CRUDGroupRights{{CRUD}}
 ```
