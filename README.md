@@ -60,7 +60,9 @@ keytool -list -v -alias androiddebugkey -keystore ~/.android/debug.keystore -sto
 ## Run and debug
 
 1. Connect device with USB with USB Debugging turned on in Dev Options
-2. `flutter run`
+2. `flutter pub run build_runner build`
+3. `flutter test`
+4. `flutter run`
 
 ### WiFi debugging
 
