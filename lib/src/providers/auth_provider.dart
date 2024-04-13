@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:uah_shelters/src/models/employee.dart';
+import 'package:uah_shelters/src/models/auth_user.dart';
 import 'package:uah_shelters/src/services/api/auth/interface.dart';
 
 class AuthenticationProvider extends ChangeNotifier {
   final IAuthService _authService;
   
-  Employee? _user;
+  AuthUser? _user;
 
-  Employee? get user => _user;
+  AuthUser? get user => _user;
 
   AuthenticationProvider(this._authService);
 

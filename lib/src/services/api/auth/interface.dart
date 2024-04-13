@@ -1,7 +1,6 @@
-import 'package:uah_shelters/src/models/employee.dart';
+import 'package:uah_shelters/src/models/auth_user.dart';
 
 abstract class IAuthService {
-  Future<Employee> signInWithGoogle();
+  Future<AuthUser> signInWithGoogle();
   Future<void> signOut();
-  // Stream<Employee> get authStateChanges;
 }

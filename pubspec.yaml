@@ -43,6 +43,11 @@ dependencies:
   flutter_native_splash: ^2.4.0
   flutter_launcher_icons: "^0.13.1"
   auto_route: "^8.0.3"
+  hive: ^4.0.0-dev.2
+  isar_flutter_libs: ^4.0.0-dev.13
+  path_provider: ^2.1.0
+  cloud_firestore: ^4.16.0
+  ulid4d: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -113,7 +118,7 @@ flutter_launcher_icons:
   android: "launcher_icon"
   image_path: "assets/logo.png"
   adaptive_icon_background: "#014d84"
-  min_sdk_android: 21 # android min sdk min:16, default 21
+  min_sdk_android: 23 # android min sdk min:16, default 21
   ios:
     remove_alpha_ios: true
     image_path: "assets/logo.png"

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:provider/provider.dart';
 import 'package:uah_shelters/src/constants/app_router.gr.dart';
+import 'package:uah_shelters/src/models/settings.dart';
 import 'package:uah_shelters/src/providers/auth_provider.dart';
+import 'package:uah_shelters/src/providers/settings_provider.dart';
 
 @RoutePage()
 class HomeScreen extends StatefulWidget {
@@ -39,6 +41,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final authProvider =
         Provider.of<AuthenticationProvider>(context, listen: false);
+    final settingsProvider =
+        Provider.of<SettingsProvider>(context, listen: false);
 
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
@@ -49,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          IconButton(
+          if (settingsProvider.settings.isCloud) IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () async {
               await authProvider.signOut();
