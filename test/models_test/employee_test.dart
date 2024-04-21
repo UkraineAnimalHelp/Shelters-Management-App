@@ -10,6 +10,7 @@ void main() {
         accountUUID: "account-uuid-456",
         firstName: "John",
         lastName: "Doe",
+        email: "test@uah.fund",
         photoPath: "path/to/photo.jpg",
         isOwner: true,
         phones: ["123-456-7890", "098-765-4321"],
@@ -27,6 +28,7 @@ void main() {
       // Verify all fields
       expect(newEmployee.uuid, equals(employee.uuid));
       expect(newEmployee.accountUUID, equals(employee.accountUUID));
+      expect(newEmployee.email, equals(employee.email));
       expect(newEmployee.firstName, equals(employee.firstName));
       expect(newEmployee.lastName, equals(employee.lastName));
       expect(newEmployee.photoPath, equals(employee.photoPath));

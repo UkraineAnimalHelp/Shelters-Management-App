@@ -16,6 +16,11 @@ class HiveService implements IDBStorage {
   }
 
   @override
+  Future<void> addDoc(String collection, String key, dynamic data) async {
+    updateDoc(collection, key, data);
+  }
+
+  @override
   Future<void> updateDoc(String collection, String key, dynamic data) async {
     final box = Hive.box(name: collection);
     box.put(key, data);
@@ -27,7 +32,6 @@ class HiveService implements IDBStorage {
     box.deleteAll(keys);
   }
 
-
   @override
   Future<dynamic> readSubDoc(String collection, String subcollection,
       String key, String subKey) async {}
@@ -37,6 +41,10 @@ class HiveService implements IDBStorage {
       String key, dynamic from, int? limit) async {
     return BatchResult(documents: List.empty());
   }
+
+  @override
+  Future<void> addSubDoc(String collection, String subcollection, String key,
+      String subKey, dynamic data) async {}
 
   @override
   Future<void> updateSubDoc(String collection, String subcollection, String key,

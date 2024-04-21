@@ -23,7 +23,6 @@ void main() async {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider.value(
         value: AuthenticationProvider(FirebaseAuthService())),
-    ChangeNotifierProvider.value(
-        value: SettingsProvider()),
+    ChangeNotifierProvider.value(value: SettingsProvider()),
   ], child: MyApp()));
 }

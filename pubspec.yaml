@@ -48,6 +48,10 @@ dependencies:
   path_provider: ^2.1.0
   cloud_firestore: ^4.16.0
   ulid4d: ^2.0.0
+  firebase_storage: ^11.7.2
+  image_picker: ^1.1.0
+  image_cropper: ^5.0.1
+  image: ^4.1.7
 
 dev_dependencies:
   flutter_test:

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:provider/provider.dart';
 import 'package:uah_shelters/src/constants/app_router.gr.dart';
+import 'package:uah_shelters/src/models/employee.dart';
 import 'package:uah_shelters/src/providers/auth_provider.dart';
 import 'package:uah_shelters/src/providers/settings_provider.dart';
+import 'package:uah_shelters/src/repository/shelter_repository.dart';
 import 'package:uah_shelters/src/models/settings.dart';
 
 @RoutePage()
@@ -36,7 +38,7 @@ class LoginScreen extends StatelessWidget {
 
     Future<void> updateSettings(AppType type) async {
       if (settings.isFirstAppLoad == true) {
-        settings.isFirstAppLoad = false;
+        // settings.isFirstAppLoad = false;
         settings.appType = type;
         await settingsProvider.update(settings);
       }
@@ -85,9 +87,18 @@ class LoginScreen extends StatelessWidget {
                           // be handled by the provider's listener in MyApp
                           if (authProvider.user != null) {
                             await updateSettings(AppType.cloud);
-                            print(authProvider.user?.email);
-                            print("Login screen: go home cloud");
-                            AutoRouter.of(context).push(const HomeRoute());
+                            Employee? e = await ShelterRepository.instance
+                                .getOneEmployee(authProvider.user!.id!);
+                            if (e == null) {
+                              // ignore: use_build_context_synchronously
+                              AutoRouter.of(context)
+                                  .push(EmployeeRegistrationRoute());
+                            } else {
+                              // ignore: use_build_context_synchronously
+                              AutoRouter.of(context).replaceAll([
+                                const HomeRoute(),
+                              ]);
+                            }
                           }
                         } catch (e) {
                           print(e);
@@ -112,6 +123,7 @@ class LoginScreen extends StatelessWidget {
                         await updateSettings(AppType.local);
                         print("Login screen: go home local");
                         // as we dont need to login now, we should skip login screen
+                        // ignore: use_build_context_synchronously
                         AutoRouter.of(context).replaceAll([
                           const HomeRoute(),
                         ]);

@@ -4,6 +4,7 @@ class Employee {
   String firstName;
   String lastName;
   String photoPath;
+  String email;
   bool isOwner;
   List<String> phones;
   List<String> links;
@@ -16,6 +17,7 @@ class Employee {
     required this.lastName,
     required this.photoPath,
     required this.isOwner,
+    required this.email,
     this.accountUUID,
     List<String>? phones,
     List<String>? links,
@@ -33,6 +35,7 @@ class Employee {
       firstName: json['firstName'],
       lastName: json['lastName'],
       photoPath: json['photoPath'],
+      email: json['email'],
       phones: List<String>.from(json['phones'] ?? []),
       isOwner: json['isOwner'],
       links: json['links'] != null ? List<String>.from(json['links']) : [],
@@ -51,6 +54,7 @@ class Employee {
       'accountUUID': accountUUID,
       'firstName': firstName,
       'lastName': lastName,
+      'email': email,
       'photoPath': photoPath,
       'phones': phones,
       'isOwner': isOwner,

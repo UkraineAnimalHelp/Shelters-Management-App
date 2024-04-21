@@ -10,5 +10,6 @@ class AppRouter extends $AppRouter {
     // of the replaceInRouteName property
     AutoRoute(page: LoginRoute.page, initial: true),
     AutoRoute(page: HomeRoute.page),
+    AutoRoute(page: EmployeeRegistrationRoute.page),
   ];
 }

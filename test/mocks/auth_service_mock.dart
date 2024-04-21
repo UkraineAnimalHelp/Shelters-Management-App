@@ -27,7 +27,7 @@ class MockFirebaseAuthService extends Mock implements IAuthService {
     );
     final firebaseAuth = MockFirebaseAuth(mockUser: user);
     final result = await firebaseAuth.signInWithCredential(credential);
-    final firebaseUser = await result.user;
+    final firebaseUser = result.user;
 
     return AuthUser(
       id: firebaseUser?.uid, 

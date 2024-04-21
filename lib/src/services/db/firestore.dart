@@ -33,6 +33,11 @@ class FirestoreService implements IDBStorage {
   }
 
   @override
+  Future<void> addDoc(String collection, String key, dynamic data) async {
+    await _db.collection(collection).add(data);
+  }
+
+  @override
   Future<void> updateDoc(String collection, String key, dynamic data) async {
     await _db.collection(collection).doc(key).set(data);
   }
@@ -47,8 +52,7 @@ class FirestoreService implements IDBStorage {
     }
 
     await batch.commit();
-  }  
-
+  }
 
   @override
   Future<dynamic> readSubDoc(String collection, String subcollection,
@@ -88,7 +92,11 @@ class FirestoreService implements IDBStorage {
     return BatchResult(documents: documents, last: lastDocument);
   }
 
-
+  @override
+  Future<void> addSubDoc(String collection, String subcollection, String key,
+      String subKey, dynamic data) async {
+    await _db.collection(collection).add(data);
+  }
 
   @override
   Future<void> updateSubDoc(String collection, String subcollection, String key,
