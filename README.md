@@ -63,6 +63,7 @@ keytool -list -v -alias androiddebugkey -keystore ~/.android/debug.keystore -sto
 2. `flutter pub run build_runner build`
 3. `flutter test`
 4. `flutter run`
+5. `flutter analyze`
 
 ### WiFi debugging
 
