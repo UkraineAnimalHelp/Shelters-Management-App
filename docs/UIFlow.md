@@ -18,12 +18,14 @@ where modifying treatment time cant change already finished previous tasks.
     }
 } }%%
 flowchart LR;
-    style Stuff fill:#e3b600,stroke:#333,color:#333,stroke-width:4px
+    style AssingGroups fill:#e3b600,stroke:#333,color:#333,stroke-width:4px
     style GroupRights fill:#e3b600,stroke:#333,color:#333,stroke-width:4px
     style MakePDF fill:#e3b600,stroke:#333,color:#333,stroke-width:4px
+    style Shelters fill:#e3b600,stroke:#333,color:#333,stroke-width:4px
 
-    A[Open App] -->|Google Login| Register(Register Employee)-->RegisterOrg(Register Organization)--> Home(Home)
-    Register(Register Employee)-->AssignToOrg(Join Organization)-->|Approved| Home(Home)
+    A[Open App] -->|Google Login| Register(Register Employee)-->ChooseType(Choose type)
+    ChooseType(Choose type)-->RegisterOrg(Register Organization)--> Home(Home)
+    ChooseType(Choose type)-->AssignToOrg(Join Organization)-->|Assigned| Home(Home)
     A[Open App] -->|Google Login| Home(Home)
     A[Open App] -->|Local Login| Home(Home)
     Home --> Tasks(Today tasks: Selected)
@@ -52,9 +54,9 @@ flowchart LR;
     Knowledge-->SearchInfo{{Search Info}}
     Knowledge-->CRUDKnowledge{{CRUD}}
 
-    SheltersMngmt-->Shelters(Shelters)-->CRUDShelters{{CRUD}}
-    SheltersMngmt-->Stuff(Version2: Stuff)-->CRUDStuff{{CRUD}}
-    Stuff(Version2: Stuff)-->AssingGroups{{Assing to Groups}}
-    Stuff(Version2: Stuff)-->AssingShelters{{Assing to Shelters}}
+    SheltersMngmt-->Shelters(Version2: Shelters)-->CRUDShelters{{CRUD}}
+    SheltersMngmt-->Stuff(Stuff)-->CRUDStuff{{AddByID & list}}
+    Stuff(Stuff)-->AssingGroups{{Version2: Assing to Groups}}
+    Stuff(Stuff)-->AssingShelters{{Assing to Shelters}}
     SheltersMngmt-->GroupRights(Version2: Group Rights)-->CRUDGroupRights{{CRUD}}
 ```
