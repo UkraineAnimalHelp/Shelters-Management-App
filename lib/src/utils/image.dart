@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:uah_shelters/src/constants/styles.dart';
 
 class ImageHelper {
   static Future<File?> pickSquareFromGallery({
@@ -20,7 +21,7 @@ class ImageHelper {
         uiSettings: [
           AndroidUiSettings(
               toolbarTitle: title,
-              toolbarColor: Colors.deepOrange,
+              toolbarColor: BaseStyle.primaryButtonColor,
               toolbarWidgetColor: Colors.white,
               initAspectRatio: CropAspectRatioPreset.square,
               lockAspectRatio: true),

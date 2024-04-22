@@ -20,11 +20,10 @@ where modifying treatment time cant change already finished previous tasks.
 flowchart LR;
     style Stuff fill:#e3b600,stroke:#333,color:#333,stroke-width:4px
     style GroupRights fill:#e3b600,stroke:#333,color:#333,stroke-width:4px
-    style AssignToOrg fill:#e3b600,stroke:#333,color:#333,stroke-width:4px
     style MakePDF fill:#e3b600,stroke:#333,color:#333,stroke-width:4px
 
     A[Open App] -->|Google Login| Register(Register Employee)-->RegisterOrg(Register Organization)--> Home(Home)
-    Register(Register Employee)-->AssignToOrg(Version2: Join Organization)-->|Approved| Home(Home)
+    Register(Register Employee)-->AssignToOrg(Join Organization)-->|Approved| Home(Home)
     A[Open App] -->|Google Login| Home(Home)
     A[Open App] -->|Local Login| Home(Home)
     Home --> Tasks(Today tasks: Selected)
