@@ -59,8 +59,17 @@ keytool -list -v -alias androiddebugkey -keystore ~/.android/debug.keystore -sto
 
 ## Run and debug
 
+### For Adnroid
+
+Add this to your adnroid/local.properties:
+```
+flutter.minSdkVersion=23
+flutter.targetSdkVersion=33
+flutter.compileSdkVersion=33
+```
+
 1. Connect device with USB with USB Debugging turned on in Dev Options
-2. `flutter pub run build_runner build`
+2. `dart run build_runner build`
 3. `flutter test`
 4. `flutter run`
 5. `flutter analyze`
