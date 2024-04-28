@@ -12,10 +12,10 @@ import 'package:auto_route/auto_route.dart' as _i5;
 import 'package:flutter/material.dart' as _i6;
 import 'package:uah_shelters/src/ui/screens/home_screen.dart' as _i2;
 import 'package:uah_shelters/src/ui/screens/login_screen.dart' as _i4;
+import 'package:uah_shelters/src/ui/screens/registration/employee_registration_screen.dart'
+    as _i1;
 import 'package:uah_shelters/src/ui/screens/registration/join_or_reg_org_screen.dart'
     as _i3;
-import 'package:uah_shelters/src/ui/screens/registration/registration_screen.dart'
-    as _i1;
 
 abstract class $AppRouter extends _i5.RootStackRouter {
   $AppRouter({super.navigatorKey});

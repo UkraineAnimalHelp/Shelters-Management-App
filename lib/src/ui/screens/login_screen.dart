@@ -8,6 +8,7 @@ import 'package:uah_shelters/src/providers/settings_provider.dart';
 import 'package:uah_shelters/src/repository/shelter_repository.dart';
 import 'package:uah_shelters/src/models/settings.dart';
 import 'package:uah_shelters/src/services/db/firestore.dart';
+import 'package:uah_shelters/src/services/fs/firebase.dart';
 
 @RoutePage()
 class LoginScreen extends StatelessWidget {
@@ -44,7 +45,8 @@ class LoginScreen extends StatelessWidget {
 
     void nextCloudScreen(BuildContext context) async {
       try {
-        ShelterRepository.initialize(FirestoreService());
+        ShelterRepository.initialize(
+            FirestoreService(), FirebaseStorageService());
         await authProvider.signInWithGoogle();
       } catch (e) {
         scaffoldMessenger.showSnackBar(

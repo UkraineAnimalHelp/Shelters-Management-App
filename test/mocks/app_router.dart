@@ -5,7 +5,6 @@ import 'package:uah_shelters/src/constants/constants.dart';
 
 class TestRouter extends Mock implements AppRouter, StackRouter {}
 
-// Use this annotation to generate a mock class for SettingsProvider
 @GenerateMocks(
   [],
   customMocks: [

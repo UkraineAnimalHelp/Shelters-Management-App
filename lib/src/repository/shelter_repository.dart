@@ -1,21 +1,27 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:uah_shelters/src/models/access_group.dart';
 import 'package:uah_shelters/src/models/account.dart';
 import 'package:uah_shelters/src/models/shelter.dart';
 import 'package:uah_shelters/src/services/db/interface.dart';
+import 'package:uah_shelters/src/services/fs/interface.dart';
 import 'package:uah_shelters/src/models/employee.dart';
 
 class ShelterRepository {
   final IDBStorage dbStorage;
+  final IFSStorage fsStorage;
 
-  ShelterRepository._privateConstructor(this.dbStorage);
+  ShelterRepository._privateConstructor(this.dbStorage, this.fsStorage);
 
   static ShelterRepository? _instance;
 
-  static void initialize(IDBStorage dbStorage) {
-    _instance ??= ShelterRepository._privateConstructor(dbStorage);
+  static void initialize(IDBStorage dbStorage, IFSStorage fsStorage) {
+    _instance ??= ShelterRepository._privateConstructor(dbStorage, fsStorage);
+  }
+
+  static void reset() {
+    // This method is added for testing purposes.
+    _instance = null;
   }
 
   static ShelterRepository get instance {
@@ -107,18 +113,12 @@ class ShelterRepository {
   }
 
   // Files --------------------------------------------------------------------
-
   Future<String> getFileUrl(String path) async {
-    return await FirebaseStorage.instance.ref(path).getDownloadURL();
+    return await fsStorage.getFileURI(path);
   }
 
   Future<String> uploadFile(
       String path, File file, FutureOr<dynamic> Function()? action) async {
-    action ??= () => {};
-    FirebaseStorage storage = FirebaseStorage.instance;
-    Reference ref = storage.ref().child(path);
-    UploadTask uploadTask = ref.putFile(file);
-    await uploadTask.whenComplete(action);
-    return await ref.getDownloadURL();
+    return await fsStorage.uploadFile(path, file, action);
   }
 }

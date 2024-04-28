@@ -41,6 +41,8 @@ class EmployeeRegistrationScreen extends StatelessWidget {
           lastName: employee.lastNameController.text,
           photoPath: employee.photoController.text,
           email: authProvider.user!.email ?? "",
+          phones: [employee.phoneController.text,],
+          links: [employee.linkController.text],
           isOwner: false);
 
       await repo.addEmployee(model);

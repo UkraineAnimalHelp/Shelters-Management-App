@@ -20,6 +20,7 @@ List<FormStep> formSteps(EmployeeFormData employee) {
         ),
         const SizedBox(height: 48.0),
         TextFormField(
+          key: const Key("firstName"),
           controller: employee.firstNameController,
           validator: (value) => value != null && value.runes.length > 2
               ? null
@@ -31,6 +32,7 @@ List<FormStep> formSteps(EmployeeFormData employee) {
         ),
         const SizedBox(height: 48.0),
         TextFormField(
+          key: const Key("lastName"),
           controller: employee.lastNameController,
           validator: (value) => value != null && value.runes.length > 2
               ? null
@@ -55,6 +57,7 @@ List<FormStep> formSteps(EmployeeFormData employee) {
         ),
         const SizedBox(height: 48.0),
         TextFormField(
+          key: const Key("phone"),
           controller: employee.phoneController,
           validator: (value) => isPhone(value!.trim())
               ? null
@@ -66,6 +69,7 @@ List<FormStep> formSteps(EmployeeFormData employee) {
         ),
         const SizedBox(height: 48.0),
         TextFormField(
+          key: const Key("linkedinLink"),
           controller: employee.linkController,
           validator: (value) => isLink(value!.trim())
               ? null
