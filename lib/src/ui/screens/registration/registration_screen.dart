@@ -47,7 +47,7 @@ class EmployeeRegistrationScreen extends StatelessWidget {
       await repo.setEmployeePhoto(model, File(model.photoPath));
       // ignore: use_build_context_synchronously
       AutoRouter.of(context).replaceAll([
-        const HomeRoute(),
+        const JoinOrRegisterOrganizationRoute(),
       ]);
     }
   }

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:provider/provider.dart';
-import 'package:uah_shelters/src/constants/app_router.gr.dart';
+import 'package:uah_shelters/src/constants/constants.dart';
 import 'package:uah_shelters/src/models/employee.dart';
 import 'package:uah_shelters/src/providers/auth_provider.dart';
 import 'package:uah_shelters/src/providers/settings_provider.dart';
 import 'package:uah_shelters/src/repository/shelter_repository.dart';
 import 'package:uah_shelters/src/models/settings.dart';
+import 'package:uah_shelters/src/services/db/firestore.dart';
 
 @RoutePage()
 class LoginScreen extends StatelessWidget {
@@ -17,15 +18,12 @@ class LoginScreen extends StatelessWidget {
     // Capture the ScaffoldMessenger outside the async gap
     final scaffoldMessenger = ScaffoldMessenger.of(context);
 
-    print("BUILD: Login");
-
     final settingsProvider =
         Provider.of<SettingsProvider>(context, listen: false);
 
     var settings = settingsProvider.settings;
 
     if (settings.isFirstAppLoad == false && settings.appType == AppType.local) {
-      print("Login screen: go home1");
       // as we dont need to login now, we should skip login screen
       AutoRouter.of(context).replaceAll([
         const HomeRoute(),
@@ -44,13 +42,44 @@ class LoginScreen extends StatelessWidget {
       }
     }
 
-    const backgroundColor = Colors.white;
-    const textColor = Colors.black;
-    const buttonColor = Color(0xFFFF6B00); // Example orange color
-    const buttonTextColor = Colors.white;
+    void nextCloudScreen(BuildContext context) async {
+      try {
+        ShelterRepository.initialize(FirestoreService());
+        await authProvider.signInWithGoogle();
+      } catch (e) {
+        scaffoldMessenger.showSnackBar(
+          SnackBar(
+            content: Text('Failed to sign in with Google: $e'),
+            duration: const Duration(seconds: 10),
+          ),
+        );
+        return null;
+      }
+
+      // After successful sign-in, the state change will automatically
+      // be handled by the provider's listener in MyApp
+      if (authProvider.user != null) {
+        await updateSettings(AppType.cloud);
+        Employee? e = await ShelterRepository.instance
+            .getOneEmployee(authProvider.user!.id!);
+
+        if (e == null) {
+          // ignore: use_build_context_synchronously
+          AutoRouter.of(context).push(EmployeeRegistrationRoute());
+        } else if (e.accountUUID == null) {
+          // ignore: use_build_context_synchronously
+          AutoRouter.of(context).push(const JoinOrRegisterOrganizationRoute());
+        } else {
+          // ignore: use_build_context_synchronously
+          AutoRouter.of(context).replaceAll([
+            const HomeRoute(),
+          ]);
+        }
+      }
+    }
 
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: BaseStyle.backgroundColor,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(
@@ -69,7 +98,7 @@ class LoginScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 32.0,
                       fontWeight: FontWeight.bold,
-                      color: textColor,
+                      color: BaseStyle.primaryTextColor,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -77,39 +106,13 @@ class LoginScreen extends StatelessWidget {
                   if (settings.isCloud)
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: buttonColor, // Background color
-                        foregroundColor: buttonTextColor, // Text color
+                        backgroundColor:
+                            BaseStyle.primaryButtonColor, // Background color
+                        foregroundColor:
+                            BaseStyle.primaryButtonTextColor, // Text color
                       ),
                       onPressed: () async {
-                        try {
-                          await authProvider.signInWithGoogle();
-                          // After successful sign-in, the state change will automatically
-                          // be handled by the provider's listener in MyApp
-                          if (authProvider.user != null) {
-                            await updateSettings(AppType.cloud);
-                            Employee? e = await ShelterRepository.instance
-                                .getOneEmployee(authProvider.user!.id!);
-                            if (e == null) {
-                              // ignore: use_build_context_synchronously
-                              AutoRouter.of(context)
-                                  .push(EmployeeRegistrationRoute());
-                            } else {
-                              // ignore: use_build_context_synchronously
-                              AutoRouter.of(context).replaceAll([
-                                const HomeRoute(),
-                              ]);
-                            }
-                          }
-                        } catch (e) {
-                          print(e);
-                          scaffoldMessenger.showSnackBar(
-                            SnackBar(
-                              content:
-                                  Text('Failed to sign in with Google: $e'),
-                              duration: const Duration(seconds: 10),
-                            ),
-                          );
-                        }
+                        nextCloudScreen(context);
                       },
                       child: const Text('Sign in with Google'),
                     ),
@@ -117,11 +120,11 @@ class LoginScreen extends StatelessWidget {
                   if (settings.isLocal)
                     TextButton(
                       style: TextButton.styleFrom(
-                        foregroundColor: textColor, // Text color
+                        foregroundColor:
+                            BaseStyle.primaryTextColor, // Text color
                       ),
                       onPressed: () async {
                         await updateSettings(AppType.local);
-                        print("Login screen: go home local");
                         // as we dont need to login now, we should skip login screen
                         // ignore: use_build_context_synchronously
                         AutoRouter.of(context).replaceAll([
@@ -133,7 +136,7 @@ class LoginScreen extends StatelessWidget {
                   const SizedBox(height: 24.0),
                   TextButton(
                     style: TextButton.styleFrom(
-                      foregroundColor: textColor, // Text color
+                      foregroundColor: BaseStyle.primaryTextColor, // Text color
                     ),
                     onPressed: () {
                       // Handle "Sign Up" action
