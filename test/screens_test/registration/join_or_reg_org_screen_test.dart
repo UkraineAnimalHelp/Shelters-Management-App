@@ -61,7 +61,6 @@ void main() {
     await tester.pumpAndSettle();
 
     // Verify navigation was called
-    verifyNever(mockRouter.push(any));
-    // verify(mockRouter.push(any)).called(1);
+    verify(mockRouter.push(any)).called(1);
   });
 }

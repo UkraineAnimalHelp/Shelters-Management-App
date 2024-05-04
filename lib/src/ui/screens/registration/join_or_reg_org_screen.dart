@@ -64,7 +64,7 @@ class JoinOrRegisterOrganizationScreen extends StatelessWidget {
                           BaseStyle.primaryButtonTextColor, // Text color
                     ),
                     onPressed: () async {
-                    //  AutoRouter.of(context).push(EmployeeRegistrationRoute());
+                      AutoRouter.of(context).push(RegisterOrganizationRoute());
                     },
                     child: const Text('Create new one'),
                   ),
