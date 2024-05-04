@@ -55,10 +55,7 @@ void main() {
       (WidgetTester tester) async {
     await tester.pumpWidget(createTestableWidget(RegisterOrganizationScreen()));
 
-    // Verify the title text is present
     expect(find.text('Create organization'), findsOneWidget);
-
-    // Verify both buttons are present
     expect(find.text('Create new one'), findsOneWidget);
   });
 
@@ -94,7 +91,6 @@ void main() {
     await tester.tap(find.text('Create new one'));
     await tester.pumpAndSettle();
 
-    // Verify navigation was called
     verify(mockDBStorage.readDoc("accounts", uuid)).called(1);
     verify(mockDBStorage.readDoc("employees", authProvider.user!.id!))
         .called(1);
