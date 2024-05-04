@@ -7,6 +7,7 @@ void main() {
       // Define a sample Account
       final account = Account(
         uuid: "uuid-123",
+        ownerUUID: "1133-444",
         organizationName: "OpenAI",
       );
 

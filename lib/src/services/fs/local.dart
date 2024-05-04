@@ -1,14 +1,11 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:uah_shelters/src/services/fs/interface.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 import 'package:permission_handler/permission_handler.dart';
 
 class LocalStorageService implements IFSStorage {
-  final FirebaseStorage _fs = FirebaseStorage.instance;
-
   Future<bool> _requestPermissions() async {
     var status = await Permission.storage.status;
     if (!status.isGranted) {

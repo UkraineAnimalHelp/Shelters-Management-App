@@ -92,8 +92,17 @@ class ShelterRepository {
   }
 
   // Account ------------------------------------------------------------------
+  Future<Account?> getOneAccount(String uuid) async {
+    final Map<String, dynamic>? json =
+        await dbStorage.readDoc('accounts', uuid);
+    if (json == null) {
+      return null;
+    }
+    return Account.fromJson(json);
+  }
+  
   Future<void> addAccount(Account account) async {
-    await dbStorage.addDoc('employees', account.uuid, account.toJson());
+    await dbStorage.addDoc('accounts', account.uuid, account.toJson());
   }
 
   Future<void> updateAccount(Account account) async {
