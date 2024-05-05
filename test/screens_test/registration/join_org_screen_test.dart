@@ -24,7 +24,7 @@ void main() {
     );
   }
 
-  testWidgets('RegisterOrganizationScreen displays the correct items',
+  testWidgets('JoinOrganizationScreen displays the correct items',
       (WidgetTester tester) async {
     await authProvider.signInWithGoogle();
     await tester

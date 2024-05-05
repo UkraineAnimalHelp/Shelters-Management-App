@@ -74,6 +74,26 @@ flutter.compileSdkVersion=33
 4. `flutter run`
 5. `flutter analyze`
 
+### Run with firebase emulator
+
+Install emulator suit
+```bash
+sudo rm -rf /usr/local/bin/firebase
+nvm install 19
+nvm use 19
+npm install -g firebase-tools@13.5.0
+```
+
+Run emulators
+```bash
+firebase emulators:start -c firebase/dev/firebase.json
+```
+
+Run app with emulation
+```bash
+flutter run --dart-define=DEBUG=true --dart-define=EMULATOR_HOST=YOUR_IP[example 192.168.31.182]
+```
+
 ### WiFi debugging
 
 ```bash

@@ -52,10 +52,14 @@ android {
     }
 
     buildTypes {
+        debug {
+            resValue "string", "networkSecurityConfig", "@xml/network_security_config_dev"
+        }
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
+            resValue "string", "networkSecurityConfig", "@xml/network_security_config_prod"
         }
     }
 }

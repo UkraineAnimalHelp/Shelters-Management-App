@@ -2,7 +2,8 @@
     <application
         android:label="uah_shelters"
         android:name="${applicationName}"
-        android:icon="@mipmap/launcher_icon">
+        android:icon="@mipmap/launcher_icon"
+        android:networkSecurityConfig="@string/networkSecurityConfig">
         <activity
             android:name=".MainActivity"
             android:exported="true"
