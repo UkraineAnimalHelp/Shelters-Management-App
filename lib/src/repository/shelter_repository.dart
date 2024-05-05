@@ -24,6 +24,11 @@ class ShelterRepository {
     _instance = null;
   }
 
+  static bool isInited() {
+    // This method is added for testing purposes.
+    return _instance == null ? false: true;
+  }
+
   static ShelterRepository get instance {
     if (_instance == null) {
       throw Exception("ShelterRepository must be initialized before use");
@@ -32,6 +37,42 @@ class ShelterRepository {
   }
 
   // Employee -----------------------------------------------------------------
+
+  String getLocalUUID() {
+    return "local";
+  }
+
+  Future<void> createLocalEmployee() async {
+    var id = getLocalUUID();
+    var employee = Employee(
+      uuid: id,
+      accountUUID: id,
+      firstName: "",
+      lastName: "",
+      photoPath: "",
+      phones: [],
+      links: [],
+      inShelters: [],
+      inAccessGroups: [],
+      email: "",
+      isOwner: true);
+
+    await addEmployee(employee);
+
+    var account = Account(
+      uuid: id,
+      ownerUUID: id,
+      organizationName: "local");
+
+    await addAccount(account);
+
+    var shelter = Shelter(
+      uuid: id,
+      accountUUID: id,
+      name: "local");
+
+    return await addShelter(shelter);
+  }
 
   Future<Employee?> getOneEmployee(String uuid) async {
     final Map<String, dynamic>? json =
@@ -121,6 +162,23 @@ class ShelterRepository {
     await dbStorage.updateDoc('employees', employee.uuid, account.toJson());
   }
 
+  // Shelter ------------------------------------------------------------------
+  Future<Shelter?> getOneShelter(String uuid) async {
+    final Map<String, dynamic>? json =
+        await dbStorage.readDoc('shelters', uuid);
+    if (json == null) {
+      return null;
+    }
+    return Shelter.fromJson(json);
+  }
+  
+  Future<void> addShelter(Shelter account) async {
+    await dbStorage.addDoc('shelters', account.uuid, account.toJson());
+  }
+
+  Future<void> updateShelter(Shelter account) async {
+    await dbStorage.updateDoc('shelters', account.uuid, account.toJson());
+  }
   // Files --------------------------------------------------------------------
   Future<String> getFileUrl(String path) async {
     return await fsStorage.getFileURI(path);
