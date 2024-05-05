@@ -8,7 +8,9 @@ import 'package:uah_shelters/src/providers/settings_provider.dart';
 import 'package:uah_shelters/src/repository/shelter_repository.dart';
 import 'package:uah_shelters/src/models/settings.dart';
 import 'package:uah_shelters/src/services/db/firestore.dart';
+import 'package:uah_shelters/src/services/db/hive.dart';
 import 'package:uah_shelters/src/services/fs/firebase.dart';
+import 'package:uah_shelters/src/services/fs/local.dart';
 
 @RoutePage()
 class LoginScreen extends StatelessWidget {
@@ -45,8 +47,11 @@ class LoginScreen extends StatelessWidget {
 
     void nextCloudScreen(BuildContext context) async {
       try {
-        ShelterRepository.initialize(
-            FirestoreService(), FirebaseStorageService());
+        // for tests
+        if (!ShelterRepository.isInited()) {
+          ShelterRepository.initialize(
+              FirestoreService(), FirebaseStorageService());
+        }
         await authProvider.signInWithGoogle();
       } catch (e) {
         scaffoldMessenger.showSnackBar(
@@ -78,6 +83,31 @@ class LoginScreen extends StatelessWidget {
           ]);
         }
       }
+    }
+
+    void nextLocalScreen(BuildContext context) async {
+      try {
+        // for tests
+        if (!ShelterRepository.isInited()) {
+          ShelterRepository.initialize(HiveService(), LocalStorageService());
+        }
+      } catch (e) {
+        scaffoldMessenger.showSnackBar(
+          SnackBar(
+            content: Text('Failed to sign in with Google: $e'),
+            duration: const Duration(seconds: 10),
+          ),
+        );
+        return null;
+      }
+
+      var repo = ShelterRepository.instance;
+      await updateSettings(AppType.local);
+      await repo.createLocalEmployee();
+      // ignore: use_build_context_synchronously
+      AutoRouter.of(context).replaceAll([
+        const HomeRoute(),
+      ]);
     }
 
     return Scaffold(
@@ -126,26 +156,10 @@ class LoginScreen extends StatelessWidget {
                             BaseStyle.primaryTextColor, // Text color
                       ),
                       onPressed: () async {
-                        await updateSettings(AppType.local);
-                        // as we dont need to login now, we should skip login screen
-                        // ignore: use_build_context_synchronously
-                        AutoRouter.of(context).replaceAll([
-                          const HomeRoute(),
-                        ]);
+                        nextLocalScreen(context);
                       },
                       child: const Text('Use local version'),
                     ),
-                  const SizedBox(height: 24.0),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      foregroundColor: BaseStyle.primaryTextColor, // Text color
-                    ),
-                    onPressed: () {
-                      // Handle "Sign Up" action
-                    },
-                    child: const Text("Don't have an account? Sign Up here"),
-                  ),
-                  const SizedBox(height: 24.0),
                 ],
               ),
             ),
