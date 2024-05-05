@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:uah_shelters/src/models/auth_user.dart';
+import 'package:uah_shelters/src/constants/constants.dart';
 import 'interface.dart';
 
 class FirebaseAuthService implements IAuthService {
@@ -26,8 +27,18 @@ class FirebaseAuthService implements IAuthService {
       idToken: googleAuth?.idToken,
     );
 
-    UserCredential userCredential =
-        await _firebaseAuth.signInWithCredential(credential);
+    UserCredential userCredential;
+
+    if (!useEmulator) {
+      userCredential =
+          await _firebaseAuth.signInWithCredential(credential);
+    } else {
+      // for testing
+      userCredential =
+          await _firebaseAuth.signInWithEmailAndPassword(
+              email: TestUserEmail, password: TestUserPassword);
+    }
+
     return _userFromFirebase(userCredential.user);
   }
 
