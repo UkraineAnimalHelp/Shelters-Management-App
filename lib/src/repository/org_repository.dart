@@ -7,16 +7,16 @@ import 'package:uah_shelters/src/services/db/interface.dart';
 import 'package:uah_shelters/src/services/fs/interface.dart';
 import 'package:uah_shelters/src/models/employee.dart';
 
-class ShelterRepository {
+class OrgRepository {
   final IDBStorage dbStorage;
   final IFSStorage fsStorage;
 
-  ShelterRepository._privateConstructor(this.dbStorage, this.fsStorage);
+  OrgRepository._privateConstructor(this.dbStorage, this.fsStorage);
 
-  static ShelterRepository? _instance;
+  static OrgRepository? _instance;
 
   static void initialize(IDBStorage dbStorage, IFSStorage fsStorage) {
-    _instance ??= ShelterRepository._privateConstructor(dbStorage, fsStorage);
+    _instance ??= OrgRepository._privateConstructor(dbStorage, fsStorage);
   }
 
   static void reset() {
@@ -29,9 +29,9 @@ class ShelterRepository {
     return _instance == null ? false: true;
   }
 
-  static ShelterRepository get instance {
+  static OrgRepository get instance {
     if (_instance == null) {
-      throw Exception("ShelterRepository must be initialized before use");
+      throw Exception("OrgRepository must be initialized before use");
     }
     return _instance!;
   }
@@ -110,11 +110,10 @@ class ShelterRepository {
     await dbStorage.updateDoc('employees', employee.uuid, employee.toJson());
   }
 
-  Future<void> setEmployeePhoto(Employee employee, File photo) async {
-    final String path = "users/${employee.uuid}/profile.jpg";
+  Future<String> updateEmployeePhoto(String uuid, File photo) async {
+    final String path = "users/$uuid/profile.jpg";
     await uploadFile(path, photo, null);
-    employee.photoPath = path;
-    await dbStorage.updateDoc('employees', employee.uuid, employee.toJson());
+    return path;
   }
 
   // Access Group -------------------------------------------------------------

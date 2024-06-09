@@ -247,11 +247,11 @@ Employees: getOne, getAll(paginated), update, remove, assignToShelter, assignToA
 
 ## Result
 
-To create a `ShelterRepository` class that interacts with a service implementing the `IDBStorage` interface and provides methods for managing `Employee` data, you can follow this design. This repository will encapsulate the logic needed to interact with the underlying database via the `IDBStorage` interface and will provide a clear API for employee-related operations.
+To create a `OrgRepository` class that interacts with a service implementing the `IDBStorage` interface and provides methods for managing `Employee` data, you can follow this design. This repository will encapsulate the logic needed to interact with the underlying database via the `IDBStorage` interface and will provide a clear API for employee-related operations.
 
-### Designing the ShelterRepository Class
+### Designing the OrgRepository Class
 
-The `ShelterRepository` will need methods to:
+The `OrgRepository` will need methods to:
 - Retrieve a single employee or all employees (with pagination support).
 - Update, and remove employees.
 - Assign employees to shelters and access groups.
@@ -262,10 +262,10 @@ Here's a Dart class that demonstrates how this could be implemented:
 import 'path_to_your_idb_storage.dart';
 import 'path_to_your_employee_class.dart';
 
-class ShelterRepository {
+class OrgRepository {
   final IDBStorage dbStorage;
 
-  ShelterRepository(this.dbStorage);
+  OrgRepository(this.dbStorage);
 
   Future<Employee> getOne(String uuid) async {
     final json = await dbStorage.readDoc('employees', uuid);
@@ -299,7 +299,7 @@ class ShelterRepository {
 ```
 
 ### Explanation:
-1. **Constructor**: The `ShelterRepository` takes an instance of `IDBStorage` to facilitate database operations.
+1. **Constructor**: The `OrgRepository` takes an instance of `IDBStorage` to facilitate database operations.
 2. **getOne**: Fetches a single employee based on UUID.
 3. **getAll**: Retrieves a list of employees, potentially with pagination. The `readDocs` method would need to handle pagination details (like which document to start from and the number of documents to fetch).
 6. **update**: Updates specific fields of an existing employee.

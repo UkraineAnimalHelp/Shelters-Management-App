@@ -6,7 +6,7 @@ import 'package:mockito/mockito.dart';
 import 'package:uah_shelters/src/models/employee.dart';
 import 'package:uah_shelters/src/models/account.dart';
 import 'package:uah_shelters/src/models/shelter.dart';
-import 'package:uah_shelters/src/repository/shelter_repository.dart';
+import 'package:uah_shelters/src/repository/org_repository.dart';
 import 'package:uah_shelters/src/ui/screens/login_screen.dart';
 import 'package:uah_shelters/src/providers/auth_provider.dart';
 import 'package:uah_shelters/src/constants/constants.dart';
@@ -32,14 +32,14 @@ void main() {
   setUp(() {
     mockDBStorage = MockDBStorage();
     mockFSStorage = MockFSStorage();
-    ShelterRepository.initialize(
+    OrgRepository.initialize(
         mockDBStorage, mockFSStorage); // Initialize with mock
     when(mockSettingsProvider.settings)
         .thenReturn(Settings(appType: AppType.notset));
   });
 
   tearDown(() {
-    ShelterRepository.reset(); // Reset after each test
+    OrgRepository.reset(); // Reset after each test
   });
 
   Widget createTestableWidget(Widget child) {
@@ -75,7 +75,7 @@ void main() {
     await tester.tap(find.text("Use local version"));
     await tester.pumpAndSettle();
 
-    var repo = ShelterRepository.instance;
+    var repo = OrgRepository.instance;
 
     var employee = Employee(
         uuid: repo.getLocalUUID(),

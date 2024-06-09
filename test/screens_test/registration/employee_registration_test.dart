@@ -4,7 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:provider/provider.dart';
 import 'package:mockito/mockito.dart';
 import 'package:uah_shelters/src/models/employee.dart';
-import 'package:uah_shelters/src/repository/shelter_repository.dart';
+import 'package:uah_shelters/src/repository/org_repository.dart';
 import 'package:uah_shelters/src/ui/screens/registration/employee_registration_screen.dart';
 import 'package:uah_shelters/src/providers/auth_provider.dart';
 
@@ -24,12 +24,12 @@ void main() {
   setUp(() {
     mockDBStorage = MockDBStorage();
     mockFSStorage = MockFSStorage();
-    ShelterRepository.initialize(
+    OrgRepository.initialize(
         mockDBStorage, mockFSStorage); // Initialize with mock
   });
 
   tearDown(() {
-    ShelterRepository.reset(); // Reset after each test
+    OrgRepository.reset(); // Reset after each test
   });
 
   Widget createTestableWidget(Widget child) {

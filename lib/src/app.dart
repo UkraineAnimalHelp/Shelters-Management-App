@@ -7,7 +7,7 @@ import 'package:uah_shelters/src/providers/settings_provider.dart';
 import 'package:uah_shelters/src/constants/constants.dart';
 import 'package:uah_shelters/src/services/db/firestore.dart';
 import 'package:uah_shelters/src/services/db/hive.dart';
-import 'package:uah_shelters/src/repository/shelter_repository.dart';
+import 'package:uah_shelters/src/repository/org_repository.dart';
 import 'package:uah_shelters/src/services/fs/firebase.dart';
 import 'package:uah_shelters/src/services/fs/local.dart';
 //import 'package:firebase_analytics/firebase_analytics.dart';
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       switch (settingsProvider.settings.appType) {
         case AppType.cloud:
           // Init cloud db singleton
-          ShelterRepository.initialize(FirestoreService(), FirebaseStorageService());
+          OrgRepository.initialize(FirestoreService(), FirebaseStorageService());
 
           var authProvider =
               Provider.of<AuthenticationProvider>(context, listen: false);
@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
           _appRouter.push(const LoginRoute());
         default:
           // Init local db singleton
-          ShelterRepository.initialize(HiveService(), LocalStorageService());
+          OrgRepository.initialize(HiveService(), LocalStorageService());
 
           _appRouter.push(const HomeRoute());
       }

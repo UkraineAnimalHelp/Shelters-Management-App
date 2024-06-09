@@ -5,7 +5,7 @@ import 'package:uah_shelters/src/constants/constants.dart';
 import 'package:uah_shelters/src/models/employee.dart';
 import 'package:uah_shelters/src/providers/auth_provider.dart';
 import 'package:uah_shelters/src/providers/settings_provider.dart';
-import 'package:uah_shelters/src/repository/shelter_repository.dart';
+import 'package:uah_shelters/src/repository/org_repository.dart';
 import 'package:uah_shelters/src/models/settings.dart';
 import 'package:uah_shelters/src/services/db/firestore.dart';
 import 'package:uah_shelters/src/services/db/hive.dart';
@@ -20,6 +20,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // Capture the ScaffoldMessenger outside the async gap
     final scaffoldMessenger = ScaffoldMessenger.of(context);
+    final router = AutoRouter.of(context);
 
     final settingsProvider =
         Provider.of<SettingsProvider>(context, listen: false);
@@ -28,7 +29,7 @@ class LoginScreen extends StatelessWidget {
 
     if (settings.isFirstAppLoad == false && settings.appType == AppType.local) {
       // as we dont need to login now, we should skip login screen
-      AutoRouter.of(context).replaceAll([
+      router.replaceAll([
         const HomeRoute(),
       ]);
       return Container();
@@ -39,7 +40,7 @@ class LoginScreen extends StatelessWidget {
 
     Future<void> updateSettings(AppType type) async {
       if (settings.isFirstAppLoad == true) {
-        // settings.isFirstAppLoad = false;
+        settings.isFirstAppLoad = false;
         settings.appType = type;
         await settingsProvider.update(settings);
       }
@@ -48,8 +49,8 @@ class LoginScreen extends StatelessWidget {
     void nextCloudScreen(BuildContext context) async {
       try {
         // for tests
-        if (!ShelterRepository.isInited()) {
-          ShelterRepository.initialize(
+        if (!OrgRepository.isInited()) {
+          OrgRepository.initialize(
               FirestoreService(), FirebaseStorageService());
         }
         await authProvider.signInWithGoogle();
@@ -67,18 +68,15 @@ class LoginScreen extends StatelessWidget {
       // be handled by the provider's listener in MyApp
       if (authProvider.user != null) {
         await updateSettings(AppType.cloud);
-        Employee? e = await ShelterRepository.instance
+        Employee? e = await OrgRepository.instance
             .getOneEmployee(authProvider.user!.id!);
 
         if (e == null) {
-          // ignore: use_build_context_synchronously
-          AutoRouter.of(context).push(EmployeeRegistrationRoute());
+          router.push(EmployeeRegistrationRoute());
         } else if (e.accountUUID == null) {
-          // ignore: use_build_context_synchronously
-          AutoRouter.of(context).push(const JoinOrRegisterOrganizationRoute());
+          router.push(const JoinOrRegisterOrganizationRoute());
         } else {
-          // ignore: use_build_context_synchronously
-          AutoRouter.of(context).replaceAll([
+          router.replaceAll([
             const HomeRoute(),
           ]);
         }
@@ -88,24 +86,24 @@ class LoginScreen extends StatelessWidget {
     void nextLocalScreen(BuildContext context) async {
       try {
         // for tests
-        if (!ShelterRepository.isInited()) {
-          ShelterRepository.initialize(HiveService(), LocalStorageService());
+        if (!OrgRepository.isInited()) {
+          OrgRepository.initialize(HiveService(), LocalStorageService());
         }
       } catch (e) {
         scaffoldMessenger.showSnackBar(
           SnackBar(
-            content: Text('Failed to sign in with Google: $e'),
+            content: Text('Failed to init local storage: $e'),
             duration: const Duration(seconds: 10),
           ),
         );
         return null;
       }
 
-      var repo = ShelterRepository.instance;
+      var repo = OrgRepository.instance;
       await updateSettings(AppType.local);
       await repo.createLocalEmployee();
       // ignore: use_build_context_synchronously
-      AutoRouter.of(context).replaceAll([
+      router.replaceAll([
         const HomeRoute(),
       ]);
     }

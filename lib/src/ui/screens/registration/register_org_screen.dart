@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:uah_shelters/src/constants/constants.dart';
-import 'package:uah_shelters/src/repository/shelter_repository.dart';
+import 'package:uah_shelters/src/repository/org_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:uah_shelters/src/models/employee.dart';
 import 'package:uah_shelters/src/models/account.dart';
@@ -21,11 +21,11 @@ class RegisterOrganizationScreen extends StatelessWidget {
       return msg;
     }
 
-    final repo = ShelterRepository.instance;
+    final repo = OrgRepository.instance;
     var accountUUID = makeURI(val);
 
     Account? account = await repo.getOneAccount(accountUUID);
-    if (account == null) {
+    if (account != null) {
       return "Such organization already exists";
     }
 
@@ -34,7 +34,7 @@ class RegisterOrganizationScreen extends StatelessWidget {
 
   void submit(BuildContext context) async {
     final scaffoldMessenger = ScaffoldMessenger.of(context);
-    final repo = ShelterRepository.instance;
+    final repo = OrgRepository.instance;
     final authProvider =
         Provider.of<AuthenticationProvider>(context, listen: false);
 

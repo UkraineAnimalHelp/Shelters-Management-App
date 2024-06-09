@@ -6,7 +6,7 @@ import 'package:uah_shelters/src/constants/constants.dart';
 import 'package:uah_shelters/src/models/employee.dart';
 import 'package:uah_shelters/src/providers/auth_provider.dart';
 import 'package:uah_shelters/src/ui/widgets/multi_step_form.dart';
-import 'package:uah_shelters/src/repository/shelter_repository.dart';
+import 'package:uah_shelters/src/repository/org_repository.dart';
 import 'form_data.dart';
 import 'form_container.dart';
 import 'form_steps.dart';
@@ -32,7 +32,9 @@ class EmployeeRegistrationScreen extends StatelessWidget {
     if (state.validate()) {
       final authProvider =
           Provider.of<AuthenticationProvider>(context, listen: false);
-      final repo = ShelterRepository.instance;
+      final repo = OrgRepository.instance;
+      final scaffoldMessenger = ScaffoldMessenger.of(context);
+      final router = AutoRouter.of(context);
 
       state.save();
       var model = Employee(
@@ -45,10 +47,21 @@ class EmployeeRegistrationScreen extends StatelessWidget {
           links: [employee.linkController.text],
           isOwner: false);
 
-      await repo.addEmployee(model);
-      await repo.setEmployeePhoto(model, File(model.photoPath));
-      // ignore: use_build_context_synchronously
-      AutoRouter.of(context).replaceAll([
+      try {
+        var path = await repo.updateEmployeePhoto(model.uuid, File(model.photoPath));
+        model.photoPath = path;
+        await repo.addEmployee(model);
+      } catch (e) {
+        scaffoldMessenger.showSnackBar(
+          SnackBar(
+            content: Text('Failed to create new user: $e'),
+            duration: const Duration(seconds: 10),
+          ),
+        );
+        return;
+      }
+   
+      router.replaceAll([
         const JoinOrRegisterOrganizationRoute(),
       ]);
     }
