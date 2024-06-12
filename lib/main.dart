@@ -43,7 +43,7 @@ void main() async {
     try {
       final userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
-              email: TestUserEmail, password: TestUserPassword);
+              email: testUserEmail, password: testUserPassword);
 
       await userCredential.user!.updateDisplayName("Google User");
       await userCredential.user!
@@ -52,7 +52,9 @@ void main() async {
       userCredential.user!.linkWithCredential(GoogleAuthProvider.credential(
         idToken: "fake-id-token",
       ));
-    } catch (e) {}
+    } catch (e) {
+       print("Fake auth failed: $e");
+    }
   }
 
   final dir = await getApplicationDocumentsDirectory();

@@ -36,7 +36,7 @@ class FirebaseAuthService implements IAuthService {
       // for testing
       userCredential =
           await _firebaseAuth.signInWithEmailAndPassword(
-              email: TestUserEmail, password: TestUserPassword);
+              email: testUserEmail, password: testUserPassword);
     }
 
     return _userFromFirebase(userCredential.user);

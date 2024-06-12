@@ -1,16 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:uah_shelters/src/services/db/interface.dart';
+import 'package:uah_shelters/src/utils/db/interface.dart';
 
-class FirestoreService implements IDBStorage {
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
+class FirestoreService {
+  final FirebaseFirestore _db;
 
-  @override
+  FirestoreService(this._db);
+
   Future<dynamic> readDoc(String collection, String key) async {
     var snapshot = await _db.collection(collection).doc(key).get();
     return snapshot.data();
   }
 
-  @override
   Future<BatchResult> readDocs(
       String collection, dynamic from, int? limit) async {
     limit = limit ?? 10;
@@ -32,17 +32,14 @@ class FirestoreService implements IDBStorage {
     return BatchResult(documents: documents, last: lastDocument);
   }
 
-  @override
   Future<void> addDoc(String collection, String key, dynamic data) async {
-    await _db.collection(collection).add(data);
+    await _db.collection(collection).doc(key).set(data);
   }
 
-  @override
   Future<void> updateDoc(String collection, String key, dynamic data) async {
     await _db.collection(collection).doc(key).set(data);
   }
 
-  @override
   Future<void> deleteDocs(String collection, List<String> keys) async {
     WriteBatch batch = _db.batch();
 
@@ -54,7 +51,6 @@ class FirestoreService implements IDBStorage {
     await batch.commit();
   }
 
-  @override
   Future<dynamic> readSubDoc(String collection, String subcollection,
       String key, String subKey) async {
     var snapshot = await _db
@@ -66,7 +62,6 @@ class FirestoreService implements IDBStorage {
     return snapshot.data();
   }
 
-  @override
   Future<BatchResult> readSubDocs(String collection, String subcollection,
       String key, dynamic from, int? limit) async {
     limit = limit ?? 10;
@@ -92,13 +87,11 @@ class FirestoreService implements IDBStorage {
     return BatchResult(documents: documents, last: lastDocument);
   }
 
-  @override
   Future<void> addSubDoc(String collection, String subcollection, String key,
       String subKey, dynamic data) async {
     await _db.collection(collection).add(data);
   }
 
-  @override
   Future<void> updateSubDoc(String collection, String subcollection, String key,
       String subKey, dynamic data) async {
     await _db
@@ -109,7 +102,6 @@ class FirestoreService implements IDBStorage {
         .set(data);
   }
 
-  @override
   Future<void> deleteSubDocs(String collection, String subcollection,
       String key, List<String> keys) async {
     WriteBatch batch = _db.batch();

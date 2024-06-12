@@ -1,11 +1,10 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:uah_shelters/src/services/fs/interface.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 import 'package:permission_handler/permission_handler.dart';
 
-class LocalStorageService implements IFSStorage {
+class LocalStorageService{
   Future<bool> _requestPermissions() async {
     var status = await Permission.storage.status;
     if (!status.isGranted) {
@@ -29,13 +28,11 @@ class LocalStorageService implements IFSStorage {
     }
   }
 
-  @override
   Future<String> getFileURI(String filePath) async {
     final dir = await getApplicationDocumentsDirectory();
     return path.join(dir.path, filePath);
   }
 
-  @override
   Future<String> uploadFile(
       String path, File file, FutureOr<dynamic> Function()? action) async {
     action ??= () => {};

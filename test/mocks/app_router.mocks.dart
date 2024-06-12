@@ -1156,10 +1156,10 @@ class MockAppRouter extends _i1.Mock implements _i7.TestRouter {
       ) as bool);
 
   @override
-  bool activeChildCanPop({bool? ignorePagelessRoutes = false}) =>
+  bool activeRouterCanPop({bool? ignorePagelessRoutes = false}) =>
       (super.noSuchMethod(
         Invocation.method(
-          #activeChildCanPop,
+          #activeRouterCanPop,
           [],
           {#ignorePagelessRoutes: ignorePagelessRoutes},
         ),
