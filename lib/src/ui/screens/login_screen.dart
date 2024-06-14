@@ -5,12 +5,8 @@ import 'package:uah_shelters/src/constants/constants.dart';
 import 'package:uah_shelters/src/models/employee.dart';
 import 'package:uah_shelters/src/providers/auth_provider.dart';
 import 'package:uah_shelters/src/providers/settings_provider.dart';
-import 'package:uah_shelters/src/repository/org_repository.dart';
 import 'package:uah_shelters/src/models/settings.dart';
-import 'package:uah_shelters/src/services/db/firestore.dart';
-import 'package:uah_shelters/src/services/db/hive.dart';
-import 'package:uah_shelters/src/services/fs/firebase.dart';
-import 'package:uah_shelters/src/services/fs/local.dart';
+import 'package:uah_shelters/src/repository/repository.dart';
 
 @RoutePage()
 class LoginScreen extends StatelessWidget {
@@ -49,10 +45,7 @@ class LoginScreen extends StatelessWidget {
     void nextCloudScreen(BuildContext context) async {
       try {
         // for tests
-        if (!OrgRepository.isInited()) {
-          OrgRepository.initialize(
-              FirestoreService(), FirebaseStorageService());
-        }
+        Repository.initialize(cloud: true);
         await authProvider.signInWithGoogle();
       } catch (e) {
         scaffoldMessenger.showSnackBar(
@@ -68,7 +61,7 @@ class LoginScreen extends StatelessWidget {
       // be handled by the provider's listener in MyApp
       if (authProvider.user != null) {
         await updateSettings(AppType.cloud);
-        Employee? e = await OrgRepository.instance
+        Employee? e = await Repository.org()
             .getOneEmployee(authProvider.user!.id!);
 
         if (e == null) {
@@ -86,9 +79,7 @@ class LoginScreen extends StatelessWidget {
     void nextLocalScreen(BuildContext context) async {
       try {
         // for tests
-        if (!OrgRepository.isInited()) {
-          OrgRepository.initialize(HiveService(), LocalStorageService());
-        }
+        Repository.initialize(cloud: false);
       } catch (e) {
         scaffoldMessenger.showSnackBar(
           SnackBar(
@@ -99,7 +90,7 @@ class LoginScreen extends StatelessWidget {
         return null;
       }
 
-      var repo = OrgRepository.instance;
+      var repo = Repository.org();
       await updateSettings(AppType.local);
       await repo.createLocalEmployee();
       // ignore: use_build_context_synchronously

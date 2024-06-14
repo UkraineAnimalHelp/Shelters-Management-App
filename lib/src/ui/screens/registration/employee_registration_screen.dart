@@ -6,7 +6,7 @@ import 'package:uah_shelters/src/constants/constants.dart';
 import 'package:uah_shelters/src/models/employee.dart';
 import 'package:uah_shelters/src/providers/auth_provider.dart';
 import 'package:uah_shelters/src/ui/widgets/multi_step_form.dart';
-import 'package:uah_shelters/src/repository/org_repository.dart';
+import 'package:uah_shelters/src/repository/repository.dart';
 import 'form_data.dart';
 import 'form_container.dart';
 import 'form_steps.dart';
@@ -32,7 +32,7 @@ class EmployeeRegistrationScreen extends StatelessWidget {
     if (state.validate()) {
       final authProvider =
           Provider.of<AuthenticationProvider>(context, listen: false);
-      final repo = OrgRepository.instance;
+      final repo = Repository.org();
       final scaffoldMessenger = ScaffoldMessenger.of(context);
       final router = AutoRouter.of(context);
 

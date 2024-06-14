@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:uah_shelters/src/constants/constants.dart';
-import 'package:uah_shelters/src/repository/org_repository.dart';
+import 'package:uah_shelters/src/repository/repository.dart';
 import 'package:provider/provider.dart';
-import 'package:uah_shelters/src/models/employee.dart';
 import 'package:uah_shelters/src/models/account.dart';
 import 'package:uah_shelters/src/providers/auth_provider.dart';
 import 'package:uah_shelters/src/utils/string.dart';
@@ -21,7 +20,7 @@ class RegisterOrganizationScreen extends StatelessWidget {
       return msg;
     }
 
-    final repo = OrgRepository.instance;
+    final repo = Repository.org();
     var accountUUID = makeURI(val);
 
     Account? account = await repo.getOneAccount(accountUUID);
@@ -34,47 +33,32 @@ class RegisterOrganizationScreen extends StatelessWidget {
 
   void submit(BuildContext context) async {
     final scaffoldMessenger = ScaffoldMessenger.of(context);
-    final repo = OrgRepository.instance;
+    final repo = Repository.org();
+    final router = AutoRouter.of(context);
     final authProvider =
         Provider.of<AuthenticationProvider>(context, listen: false);
 
     if (_formKey.currentState!.validate()) {
-      var userID = authProvider.user!.id!;
-      Employee? employee = await repo.getOneEmployee(userID);
-      
       var accountUUID = makeURI(_textEditingController.text);
-      Account? account = await repo.getOneAccount(accountUUID);
-      if (account != null) {
-        scaffoldMessenger.showSnackBar(
-          const SnackBar(
-            content:
-                Text('Such organization already exists. Choose another one'),
-            duration: Duration(seconds: 10),
-          ),
-        );
-        return;
-      }
-
-      account = Account(
+      var userID = authProvider.user!.id!;
+      var account = Account(
           organizationName: _textEditingController.text,
           ownerUUID: userID,
           uuid: accountUUID);
-
       try {
-        await repo.addAccount(account);
+        await repo.registerNewOrg(userID, account);
+        router.replaceAll([
+          const HomeRoute(),
+        ]);
       } catch (e) {
         scaffoldMessenger.showSnackBar(
           SnackBar(
-            content: Text('Failed to create new organization: $e'),
+            content: Text('Failed to create new organization: ${e.toString()}'),
             duration: const Duration(seconds: 10),
           ),
         );
         return;
       }
-
-      employee!.accountUUID = accountUUID;
-      employee.isOwner = true;
-      await repo.updateEmployee(employee);
     }
   }
 
@@ -128,9 +112,6 @@ class RegisterOrganizationScreen extends StatelessWidget {
                       ),
                       onPressed: () async {
                         submit(context);
-                        AutoRouter.of(context).replaceAll([
-                          const HomeRoute(),
-                        ]);
                       },
                       child: const Text('Create new one'),
                     ),

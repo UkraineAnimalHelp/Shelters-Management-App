@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:auto_route/auto_route.dart';
@@ -6,17 +7,18 @@ import 'package:mockito/mockito.dart';
 import 'package:uah_shelters/src/models/employee.dart';
 import 'package:uah_shelters/src/models/account.dart';
 import 'package:uah_shelters/src/models/shelter.dart';
-import 'package:uah_shelters/src/repository/org_repository.dart';
+import 'package:uah_shelters/src/repository/repository.dart';
 import 'package:uah_shelters/src/ui/screens/login_screen.dart';
 import 'package:uah_shelters/src/providers/auth_provider.dart';
 import 'package:uah_shelters/src/constants/constants.dart';
-import 'package:uah_shelters/src/models/settings.dart';
+import 'package:uah_shelters/src/models/settings.dart' as local_settings;
 import 'package:uah_shelters/src/providers/settings_provider.dart';
 
 import '../mocks/app_router.mocks.dart';
-import '../mocks/db_storage.mocks.dart';
-import '../mocks/fs_storage.mocks.dart';
 import '../mocks/auth_service_mock.dart';
+import '../mocks/firebase.mocks.dart';
+import '../mocks/firestorage.mocks.dart';
+import '../mocks/hive_service.mocks.dart';
 import '../mocks/settings_provider.mocks.dart';
 
 void main() {
@@ -25,21 +27,30 @@ void main() {
   final AuthenticationProvider authProvider =
       AuthenticationProvider(mockAuthService);
   final mockSettingsProvider = MockSettingsProvider();
+  late MockFirebaseFirestore mockFirestore;
+  late MockFirebaseStorage mockFireStorage;
+  late MockHiveService mockHiveService;
+  late MockHiveBox mockHiveBox;
 
-  late MockDBStorage mockDBStorage;
-  late MockFSStorage mockFSStorage;
+  setUp(() async {
+    mockFirestore = MockFirebaseFirestore();
+    mockFireStorage = MockFirebaseStorage();
+    mockHiveService = MockHiveService();
+    mockHiveBox = MockHiveBox();
 
-  setUp(() {
-    mockDBStorage = MockDBStorage();
-    mockFSStorage = MockFSStorage();
-    OrgRepository.initialize(
-        mockDBStorage, mockFSStorage); // Initialize with mock
-    when(mockSettingsProvider.settings)
-        .thenReturn(Settings(appType: AppType.notset));
+    when(mockHiveService.openBox(any)).thenReturn(mockHiveBox);
+    when(mockSettingsProvider.settings).thenReturn(
+        local_settings.Settings(appType: local_settings.AppType.notset));
+
+    Repository.initialize(
+        cloud: false,
+        db: mockFirestore,
+        fs: mockFireStorage,
+        hs: mockHiveService); // Initialize with mock
   });
 
   tearDown(() {
-    OrgRepository.reset(); // Reset after each test
+    Repository.reset(); // Reset after each test
   });
 
   Widget createTestableWidget(Widget child) {
@@ -71,11 +82,10 @@ void main() {
 
   testWidgets('LoginScreen local registration', (WidgetTester tester) async {
     await tester.pumpWidget(createTestableWidget(const LoginScreen()));
-
     await tester.tap(find.text("Use local version"));
     await tester.pumpAndSettle();
 
-    var repo = OrgRepository.instance;
+    var repo = Repository.org();
 
     var employee = Employee(
         uuid: repo.getLocalUUID(),
@@ -90,7 +100,7 @@ void main() {
         email: "",
         isOwner: true);
 
-    verify(mockDBStorage.addDoc(
+    verify(mockHiveService.addDoc(
             "employees", repo.getLocalUUID(), employee.toJson()))
         .called(1);
 
@@ -99,7 +109,7 @@ void main() {
         ownerUUID: repo.getLocalUUID(),
         organizationName: "local");
 
-    verify(mockDBStorage.addDoc(
+    verify(mockHiveService.addDoc(
             "accounts", repo.getLocalUUID(), account.toJson()))
         .called(1);
 
@@ -108,7 +118,7 @@ void main() {
         accountUUID: repo.getLocalUUID(),
         name: "local");
 
-    verify(mockDBStorage.addDoc(
+    verify(mockHiveService.addDoc(
             "shelters", repo.getLocalUUID(), shelter.toJson()))
         .called(1);
 
@@ -116,12 +126,23 @@ void main() {
   });
 
   testWidgets('LoginScreen cloud registration', (WidgetTester tester) async {
+    MockDocumentReference mockDocRefEmp;
+    MockCollectionReference mockColRef;
+    DocumentSnapshot<Map<String, dynamic>> mockSnapshotEmp;
+
+    mockDocRefEmp = MockDocumentReference();
+    mockColRef = MockCollectionReference();
+    mockSnapshotEmp = MockDocumentSnapshot();
+
+    when(mockFirestore.collection(any)).thenReturn(mockColRef);
+    when(mockColRef.doc(authProvider.user!.id!)).thenReturn(mockDocRefEmp);
+    when(mockDocRefEmp.get()).thenAnswer((_) async => mockSnapshotEmp);
+
     await tester.pumpWidget(createTestableWidget(const LoginScreen()));
     await tester.tap(find.text("Sign in with Google"));
     await tester.pumpAndSettle();
 
-    verify(mockDBStorage.readDoc("employees", authProvider.user!.id!))
-        .called(1);
+    verify(mockDocRefEmp.get()).called(1);
 
     verify(mockRouter.push(EmployeeRegistrationRoute())).called(1);
   });
