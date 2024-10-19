@@ -21,54 +21,6 @@ import 'package:uah_shelters/src/ui/screens/registration/join_org_screen.dart'
 import 'package:uah_shelters/src/ui/screens/registration/register_org_screen.dart'
     as _i6;
 
-abstract class $AppRouter extends _i7.RootStackRouter {
-  $AppRouter({super.navigatorKey});
-
-  @override
-  final Map<String, _i7.PageFactory> pagesMap = {
-    EmployeeRegistrationRoute.name: (routeData) {
-      final args = routeData.argsAs<EmployeeRegistrationRouteArgs>(
-          orElse: () => const EmployeeRegistrationRouteArgs());
-      return _i7.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: _i1.EmployeeRegistrationScreen(key: args.key),
-      );
-    },
-    HomeRoute.name: (routeData) {
-      return _i7.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i2.HomeScreen(),
-      );
-    },
-    JoinOrRegisterOrganizationRoute.name: (routeData) {
-      return _i7.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i3.JoinOrRegisterOrganizationScreen(),
-      );
-    },
-    JoinOrganizationRoute.name: (routeData) {
-      return _i7.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i4.JoinOrganizationScreen(),
-      );
-    },
-    LoginRoute.name: (routeData) {
-      return _i7.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i5.LoginScreen(),
-      );
-    },
-    RegisterOrganizationRoute.name: (routeData) {
-      final args = routeData.argsAs<RegisterOrganizationRouteArgs>(
-          orElse: () => const RegisterOrganizationRouteArgs());
-      return _i7.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: _i6.RegisterOrganizationScreen(key: args.key),
-      );
-    },
-  };
-}
-
 /// generated route for
 /// [_i1.EmployeeRegistrationScreen]
 class EmployeeRegistrationRoute
@@ -84,8 +36,14 @@ class EmployeeRegistrationRoute
 
   static const String name = 'EmployeeRegistrationRoute';
 
-  static const _i7.PageInfo<EmployeeRegistrationRouteArgs> page =
-      _i7.PageInfo<EmployeeRegistrationRouteArgs>(name);
+  static _i7.PageInfo page = _i7.PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<EmployeeRegistrationRouteArgs>(
+          orElse: () => const EmployeeRegistrationRouteArgs());
+      return _i1.EmployeeRegistrationScreen(key: args.key);
+    },
+  );
 }
 
 class EmployeeRegistrationRouteArgs {
@@ -110,7 +68,12 @@ class HomeRoute extends _i7.PageRouteInfo<void> {
 
   static const String name = 'HomeRoute';
 
-  static const _i7.PageInfo<void> page = _i7.PageInfo<void>(name);
+  static _i7.PageInfo page = _i7.PageInfo(
+    name,
+    builder: (data) {
+      return const _i2.HomeScreen();
+    },
+  );
 }
 
 /// generated route for
@@ -124,7 +87,12 @@ class JoinOrRegisterOrganizationRoute extends _i7.PageRouteInfo<void> {
 
   static const String name = 'JoinOrRegisterOrganizationRoute';
 
-  static const _i7.PageInfo<void> page = _i7.PageInfo<void>(name);
+  static _i7.PageInfo page = _i7.PageInfo(
+    name,
+    builder: (data) {
+      return const _i3.JoinOrRegisterOrganizationScreen();
+    },
+  );
 }
 
 /// generated route for
@@ -138,7 +106,12 @@ class JoinOrganizationRoute extends _i7.PageRouteInfo<void> {
 
   static const String name = 'JoinOrganizationRoute';
 
-  static const _i7.PageInfo<void> page = _i7.PageInfo<void>(name);
+  static _i7.PageInfo page = _i7.PageInfo(
+    name,
+    builder: (data) {
+      return const _i4.JoinOrganizationScreen();
+    },
+  );
 }
 
 /// generated route for
@@ -152,7 +125,12 @@ class LoginRoute extends _i7.PageRouteInfo<void> {
 
   static const String name = 'LoginRoute';
 
-  static const _i7.PageInfo<void> page = _i7.PageInfo<void>(name);
+  static _i7.PageInfo page = _i7.PageInfo(
+    name,
+    builder: (data) {
+      return const _i5.LoginScreen();
+    },
+  );
 }
 
 /// generated route for
@@ -170,8 +148,14 @@ class RegisterOrganizationRoute
 
   static const String name = 'RegisterOrganizationRoute';
 
-  static const _i7.PageInfo<RegisterOrganizationRouteArgs> page =
-      _i7.PageInfo<RegisterOrganizationRouteArgs>(name);
+  static _i7.PageInfo page = _i7.PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<RegisterOrganizationRouteArgs>(
+          orElse: () => const RegisterOrganizationRouteArgs());
+      return _i6.RegisterOrganizationScreen(key: args.key);
+    },
+  );
 }
 
 class RegisterOrganizationRouteArgs {

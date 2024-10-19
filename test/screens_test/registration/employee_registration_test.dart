@@ -40,8 +40,10 @@ void main() {
     when(mockColRef.doc(any)).thenReturn(mockDocRef);
     when(mockDocRef.set(any)).thenAnswer((_) => Future<void>.value());
 
-    Repository.initialize(cloud: true,
-        db: mockFirestore, fs: mockFireStorage); // Initialize with mock
+    Repository.initialize(
+        cloud: true,
+        db: mockFirestore,
+        fs: mockFireStorage); // Initialize with mock
   });
 
   tearDown(() {
@@ -100,7 +102,6 @@ void main() {
         isOwner: false);
 
     verify(mockReference.putFile(any)).called(1);
-    verify(mockDocRef.set(model.toJson()))
-        .called(1);
+    verify(mockDocRef.set(model.toJson())).called(1);
   });
 }
