@@ -6,6 +6,7 @@ import 'package:uah_shelters/src/repository/org_repository.local.dart';
 import 'package:uah_shelters/src/utils/db/hive.dart';
 import 'package:uah_shelters/src/utils/fs/local.dart';
 
+// TODO(avdonin): revisit, potentialy for future use
 class Repository {
   late final FirebaseFirestore cdb;
   late final FirebaseStorage cfs;

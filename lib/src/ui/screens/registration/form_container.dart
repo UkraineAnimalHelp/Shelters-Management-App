@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uah_shelters/src/ui/widgets/multi_step_form.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:uah_shelters/src/constants/constants.dart';
+import 'package:uah_shelters/src/shared/constants/constants.dart';
 
 class RegistrationFormContainer extends StatelessWidget {
   final void Function(BuildContext context, MultiStepFormState state) nextStep;

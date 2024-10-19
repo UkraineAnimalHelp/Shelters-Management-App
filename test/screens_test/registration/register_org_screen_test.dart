@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
-import 'package:uah_shelters/src/constants/constants.dart';
+import 'package:uah_shelters/src/shared/constants/constants.dart';
 import 'package:uah_shelters/src/models/employee.dart';
 import 'package:uah_shelters/src/models/account.dart';
 import 'package:uah_shelters/src/repository/repository.dart';

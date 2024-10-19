@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:provider/provider.dart';
-import 'package:uah_shelters/src/constants/constants.dart';
+import 'package:uah_shelters/src/shared/constants/constants.dart';
 import 'package:uah_shelters/src/models/employee.dart';
 import 'package:uah_shelters/src/providers/auth_provider.dart';
 import 'package:uah_shelters/src/ui/widgets/multi_step_form.dart';
@@ -43,12 +43,15 @@ class EmployeeRegistrationScreen extends StatelessWidget {
           lastName: employee.lastNameController.text,
           photoPath: employee.photoController.text,
           email: authProvider.user!.email ?? "",
-          phones: [employee.phoneController.text,],
+          phones: [
+            employee.phoneController.text,
+          ],
           links: [employee.linkController.text],
           isOwner: false);
 
       try {
-        var path = await repo.updateEmployeePhoto(model.uuid, File(model.photoPath));
+        var path =
+            await repo.updateEmployeePhoto(model.uuid, File(model.photoPath));
         model.photoPath = path;
         await repo.addEmployee(model);
       } catch (e) {
@@ -60,7 +63,7 @@ class EmployeeRegistrationScreen extends StatelessWidget {
         );
         return;
       }
-   
+
       router.replaceAll([
         const JoinOrRegisterOrganizationRoute(),
       ]);

@@ -1,7 +1,7 @@
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:uah_shelters/src/constants/constants.dart';
+import 'package:uah_shelters/src/shared/constants/constants.dart';
 
 class TestRouter extends Mock implements AppRouter, StackRouter {}
 

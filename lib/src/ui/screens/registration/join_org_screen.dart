@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/services.dart';
-import 'package:uah_shelters/src/constants/constants.dart';
-import 'package:provider/provider.dart';
-import 'package:uah_shelters/src/providers/auth_provider.dart';
+import 'package:uah_shelters/src/shared/constants/constants.dart';
+// import 'package:provider/provider.dart';
+// import 'package:uah_shelters/src/providers/auth_provider.dart';
 
 @RoutePage()
 class JoinOrganizationScreen extends StatelessWidget {
@@ -21,10 +21,11 @@ class JoinOrganizationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProvider =
-        Provider.of<AuthenticationProvider>(context, listen: false);
+    // final authProvider =
+    //     Provider.of<AuthenticationProvider>(context, listen: false);
 
-    var userID = authProvider.user!.id!;
+    // var userID = authProvider.user!.id!;
+    var userID = 'mocked_user_12345';
 
     return Scaffold(
       backgroundColor: BaseStyle.backgroundColor,

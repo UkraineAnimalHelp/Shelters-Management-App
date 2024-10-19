@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:uah_shelters/src/constants/constants.dart';
+import 'package:uah_shelters/src/shared/constants/constants.dart';
 import 'package:uah_shelters/src/ui/widgets/multi_step_form.dart';
 import 'package:uah_shelters/src/ui/widgets/pickable_avatar.dart';
 import 'package:uah_shelters/src/utils/validators.dart';
