@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:provider/provider.dart';
-import 'package:uah_shelters/src/constants/app_router.gr.dart';
+import 'package:uah_shelters/src/routing/app_router.gr.dart';
 import 'package:uah_shelters/src/providers/auth_provider.dart';
 import 'package:uah_shelters/src/providers/settings_provider.dart';
 
@@ -23,19 +23,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final authProvider =
@@ -43,68 +30,64 @@ class _HomeScreenState extends State<HomeScreen> {
     final settingsProvider =
         Provider.of<SettingsProvider>(context, listen: false);
 
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
         actions: [
-          if (settingsProvider.settings.isCloud) IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () async {
-              await authProvider.signOut();
-              // ignore: use_build_context_synchronously
-              AutoRouter.of(context).replaceAll([
-                const LoginRoute(),
-              ]);
-            },
-          ),
+          if (settingsProvider.settings.isCloud)
+            IconButton(
+              icon: const Icon(Icons.logout),
+              onPressed: () async {
+                await authProvider.signOut();
+                // ignore: use_build_context_synchronously
+                AutoRouter.of(context).replaceAll([
+                  const LoginRoute(),
+                ]);
+              },
+            ),
         ],
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the HomeScreen object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: const Text("Animal Manager"),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            const Text('Existing routes'),
+            const SizedBox(height: 20),
+            ElevatedButton.icon(
+              onPressed: () {
+                context.pushRoute(const LoginRoute());
+              },
+              label: const Text('go to LoginRoute'),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            ElevatedButton.icon(
+              onPressed: () {
+                context.pushRoute(EmployeeRegistrationRoute());
+              },
+              label: const Text('go to EmployeeRegistrationRoute'),
             ),
+            ElevatedButton.icon(
+              onPressed: () {
+                context.pushRoute(const JoinOrRegisterOrganizationRoute());
+              },
+              label: const Text('go to JoinOrRegisterOrganizationRoute'),
+            ),
+            ElevatedButton.icon(
+              onPressed: () {
+                context.pushRoute(RegisterOrganizationRoute());
+              },
+              label: const Text('go to RegisterOrganizationRoute'),
+            ),
+            ElevatedButton.icon(
+              onPressed: () {
+                context.pushRoute(const JoinOrganizationRoute());
+              },
+              label: const Text('go to JoinOrganizationRoute'),
+            )
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

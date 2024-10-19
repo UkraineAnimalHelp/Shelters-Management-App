@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:uah_shelters/src/constants/styles.dart';
+import 'package:uah_shelters/src/shared/constants/styles.dart';
 
 class ImageHelper {
   static Future<File?> pickSquareFromGallery({

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:uah_shelters/src/constants/constants.dart';
+import 'package:uah_shelters/src/shared/constants/constants.dart';
 
 @RoutePage()
 class JoinOrRegisterOrganizationScreen extends StatelessWidget {
@@ -41,7 +41,8 @@ class JoinOrRegisterOrganizationScreen extends StatelessWidget {
                           BaseStyle.primaryButtonTextColor, // Text color
                     ),
                     onPressed: () async {
-                      AutoRouter.of(context).push(const JoinOrganizationRoute());
+                      AutoRouter.of(context)
+                          .push(const JoinOrganizationRoute());
                     },
                     child: const Text('Join'),
                   ),

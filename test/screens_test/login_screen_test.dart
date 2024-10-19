@@ -10,7 +10,7 @@ import 'package:uah_shelters/src/models/shelter.dart';
 import 'package:uah_shelters/src/repository/repository.dart';
 import 'package:uah_shelters/src/ui/screens/login_screen.dart';
 import 'package:uah_shelters/src/providers/auth_provider.dart';
-import 'package:uah_shelters/src/constants/constants.dart';
+import 'package:uah_shelters/src/shared/constants/constants.dart';
 import 'package:uah_shelters/src/models/settings.dart' as local_settings;
 import 'package:uah_shelters/src/providers/settings_provider.dart';
 
