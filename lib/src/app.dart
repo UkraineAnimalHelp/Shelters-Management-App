@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 import 'package:uah_shelters/src/models/settings.dart';
 import 'package:uah_shelters/src/providers/auth_provider.dart';
@@ -37,8 +36,6 @@ class MyApp extends StatelessWidget {
 
             _appRouter.push(const HomeRoute());
         }
-
-        FlutterNativeSplash.remove();
       }
     });
 
