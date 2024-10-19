@@ -275,7 +275,6 @@ class MockAppRouter extends _i1.Mock implements _i7.TestRouter {
         ),
       ) as _i3.RouteCollection);
 
-  @override
   _i3.PageBuilder get pageBuilder => (super.noSuchMethod(
         Invocation.getter(#pageBuilder),
         returnValue: (_i3.RouteData data) => _FakeAutoRoutePage_6<dynamic>(
@@ -1111,7 +1110,6 @@ class MockAppRouter extends _i1.Mock implements _i7.TestRouter {
         returnValueForMissingStub: null,
       ) as T?);
 
-  @override
   _i9.Future<bool> pop<T extends Object?>([T? result]) => (super.noSuchMethod(
         Invocation.method(
           #pop,
@@ -1121,7 +1119,6 @@ class MockAppRouter extends _i1.Mock implements _i7.TestRouter {
         returnValueForMissingStub: _i9.Future<bool>.value(false),
       ) as _i9.Future<bool>);
 
-  @override
   _i9.Future<bool> popTop<T extends Object?>([T? result]) =>
       (super.noSuchMethod(
         Invocation.method(

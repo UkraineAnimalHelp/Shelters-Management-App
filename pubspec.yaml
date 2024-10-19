@@ -42,7 +42,7 @@ dependencies:
   flutter_svg: ^2.0.10+1
   flutter_native_splash: ^2.4.0
   flutter_launcher_icons: "^0.13.1"
-  auto_route: "^8.0.3"
+  auto_route: 9.2.0
   hive: ^4.0.0-dev.2
   isar_flutter_libs: ^4.0.0-dev.13
   path_provider: ^2.1.0
@@ -70,7 +70,7 @@ dev_dependencies:
   fake_cloud_firestore: ^2.4.8
   firebase_auth_mocks: ^0.13.0
   mockito: ^5.4.4
-  auto_route_generator: "^8.0.0"
+  auto_route_generator: ^9.0.0
   build_runner: "^2.4.9"
 
 # For information on the generic Dart part of this file, see the
