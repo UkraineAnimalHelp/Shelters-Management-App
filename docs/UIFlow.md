@@ -1,9 +1,19 @@
-# UI Flow
+# UI Flow V1
 
 ## Good to know
 * CRUD - All delete operations are using Soft Delete(data only marked as deleted)
-* Some update operation may be == delete & create. For example in case of treatment(task) config,
-where modifying treatment time cant change already finished previous tasks.
+
+### Tasks
+The most complicated part. Tasks breaks on 2 data types: TaskConfig & Task.
+Task config used to store task configuration, describing it. While Task is one of
+many instance created based on task config. For example we set repeat some task
+for a week. This should create 7 Tasks for each day. This is needed to have 
+Task history, and see when tasks was done and when not.
+
+This also mean that if we need to delete Task config & Tasks, we just remove future Tasks,
+while past are saved. (this is the only place where we can hard delete data, as
+future tasks are not needed). This also mean that update to Task Config need to
+update all future Tasks or even delete & recreate future Tasks.
 
 ## Flow
 ```mermaid
@@ -18,45 +28,33 @@ where modifying treatment time cant change already finished previous tasks.
     }
 } }%%
 flowchart LR;
-    style AssingGroups fill:#e3b600,stroke:#333,color:#333,stroke-width:4px
-    style GroupRights fill:#e3b600,stroke:#333,color:#333,stroke-width:4px
-    style MakePDF fill:#e3b600,stroke:#333,color:#333,stroke-width:4px
-    style Shelters fill:#e3b600,stroke:#333,color:#333,stroke-width:4px
-
-    A[Open App] -->|Google Login| Register(Register Employee)-->ChooseType(Choose type)
-    ChooseType(Choose type)-->RegisterOrg(Register Organization)--> Home(Home)
-    ChooseType(Choose type)-->AssignToOrg(Join Organization)-->|Assigned| Home(Home)
-    A[Open App] -->|Google Login| Home(Home)
-    A[Open App] -->|Local Login| Home(Home)
-    Home --> Tasks(Today tasks: Selected)
+ 
+    A[Open App] --> Home(Home)
+    Home --> Tasks(Today tasks)
     Home --> Animals(Animals)
     Home --> Knowledge(Knowledge base)
-    Home --> SheltersMngmt(Shelters Mngmt)
-    Home --> UserSettings(User Settings)-->UpdateUserSettings[Update avatar,name,phone]
+  
+    style Notify fill:#e3b600,stroke:#333,color:#333,stroke-width:4px
 
     Tasks-->Task(Task)
-    Task-->Done{{Done}}
-    Task-->Filter{{Filter}}
-    Task-->Notify{{Add to calendar}}
-    Task-->OpenTaskConfig{{Open configuration}}
-    OpenTaskConfig-->TaskConfig(Task/Procedure Config)-->CRUDTaskConfig{{CRUD}}
+    Task-->Done{{Done/Undone}}
+    Task-->Filter{{Filter by type}}
+    Task-->OpenAnimalProfile{{Open Animal profile}}
+    OpenAnimalProfile-->AnimalProfile
 
-    Animals-->SerchAnimal{{Search Animal}}
+    Animals-->SerchAnimal{{Search by name}}
+    Animals-->FilterAnimal{{Filter by species, in shelter/adopted/died, tags}}
     Animals-->AnimalProfile(Animal Profile)
-    AnimalProfile-->TaskConfig
-    AnimalProfile-->TaskHistory(Task/Procedure history)-->FilterHistory{{Filter}}
-    AnimalProfile-->CRUDAnimalProfile{{CRUD}}
-    AnimalProfile-->Metrics(Metrics)-->AddMetric{{Add metric}}
-    AnimalProfile-->MedicalDocs(Medical documents)-->CRUDAddMedicalDoc{{CRUD}}
-    AnimalProfile-->AnimalGallery(Animal gallery)-->CRUDAnimalGallery{{CRUD}}
-    AnimalProfile-->MakePDF(Version2: Convert profile to PDF)-->Generate{{Generate}}
+
+    AnimalProfile-->TaskProcedureActive(Task/Procedure active)-->TaskConfig(Task/Procedure Config)-->CRUDTaskConfig{{CRUD: title, description, start/end dtaes, recurence:hours/days/weeks/months/years, fixed times during the day}}
+    TaskConfig-->Notify{{Add to calendar. Optionaly}}
+    AnimalProfile-->TaskHistory(Task/Procedure history)-->FilterHistory{{Filter by date range, type:vaccine, treatment, procedure, task}}
+    AnimalProfile-->CRUDAnimalProfile{{CRUD:Name, Species, birth date, alergies, photo, sex, passport id, chip id, description, tags}}
+    AnimalProfile-->Metrics(Metrics: weight,temperature)-->AddMetric{{CRUD metric: wieght, temperature}}
+    AnimalProfile-->MedicalDocs(Medical documents)-->CRUDAddMedicalDoc{{CRUD: title, date, image/file}}
+    AnimalProfile-->AnimalGallery(Animal gallery)-->CRUDAnimalGallery{{CRUD: photo, description, date}}
+    AnimalProfile-->Notes(Notes)-->CRUDNotes{{CRUD:title, description, date}}
 
     Knowledge-->SearchInfo{{Search Info}}
-    Knowledge-->CRUDKnowledge{{CRUD}}
-
-    SheltersMngmt-->Shelters(Version2: Shelters)-->CRUDShelters{{CRUD}}
-    SheltersMngmt-->Stuff(Stuff)-->CRUDStuff{{AddByID & list}}
-    Stuff(Stuff)-->AssingGroups{{Version2: Assing to Groups}}
-    Stuff(Stuff)-->AssingShelters{{Assing to Shelters}}
-    SheltersMngmt-->GroupRights(Version2: Group Rights)-->CRUDGroupRights{{CRUD}}
+    Knowledge-->CRUDKnowledge{{CRUD: title, tags, description}}
 ```
