@@ -59,36 +59,6 @@ class SignInScreen extends StatelessWidget {
               ],
             ),
             const Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  "Don't have an account?",
-                  style: TextStyle(
-                    color: AppColors.grey,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const SignUpPage()),
-                    );
-                  },
-                  child: const Text(
-                    'Sign Up here',
-                    style: TextStyle(
-                      color: AppColors.orangeButton,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ],
-            ),
           ],
         ),
       ),

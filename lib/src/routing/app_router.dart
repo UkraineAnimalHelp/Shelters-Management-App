@@ -7,6 +7,8 @@ class AppRouter extends RootStackRouter {
   List<AutoRoute> get routes => [
         AutoRoute(initial: true, page: AuthRoute.page),
         AutoRoute(page: SignInRoute.page),
+        AutoRoute(page: RegisterNameRoute.page),
+        AutoRoute(page: RegisterMailRoute.page),
         AutoRoute(
           page: StartRoute.page,
           children: [

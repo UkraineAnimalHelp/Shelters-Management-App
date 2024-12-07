@@ -77,11 +77,7 @@ class AuthScreen extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const SignUpPage()),
-                    );
+                    context.pushRoute(const RegisterNameRoute());
                   },
                   child: const Text(
                     'Sign Up here',
