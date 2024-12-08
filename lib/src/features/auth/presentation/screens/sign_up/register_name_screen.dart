@@ -61,7 +61,6 @@ class RegisterNameScreen extends StatelessWidget {
                 labelText: 'Last name',
                 border: OutlineInputBorder(),
               ),
-              obscureText: true,
             ),
             const SizedBox(height: 50),
             SizedBox(
@@ -69,9 +68,7 @@ class RegisterNameScreen extends StatelessWidget {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.orangeButton),
-                onPressed: () {
-                  context.pushRoute(const RegisterMailRoute());
-                },
+                onPressed: () => context.pushRoute(RegisterMailRoute()),
                 child: const Text(
                   'Next Step',
                   style: TextStyle(color: AppColors.white),

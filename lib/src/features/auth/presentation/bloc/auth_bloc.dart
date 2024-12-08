@@ -11,7 +11,14 @@ class AuthEvent with _$AuthEvent {
   const AuthEvent._();
 
   const factory AuthEvent.init() = InitEvent;
-  const factory AuthEvent.login() = LoginEvent;
+  const factory AuthEvent.signUpEmail({
+    required String email,
+    required String password,
+  }) = SignUpEmailEvent;
+  const factory AuthEvent.loginEmail({
+    required String email,
+    required String password,
+  }) = LoginEmailEvent;
   const factory AuthEvent.logout() = LogoutEvent;
 }
 
@@ -24,17 +31,43 @@ sealed class AuthState {
 
 class AuthBLoC extends Bloc<AuthEvent, AuthState> {
   AuthBLoC(this._authService) : super(const LoadingAuthState()) {
-    on<InitEvent>(_handleInitEvent);
-    on<LoginEvent>(_handleLoginEvent);
-    on<LogoutEvent>(_handleLogoutEvent);
+    // TODO(avdonin): [] add subscription
+
+    _authService.authStream.listen(
+      (user) => add(const AuthEvent.init()),
+    );
+
+    on<InitEvent>(_onInitEvent);
+    on<LoginEmailEvent>(_onLoginEmailEvent);
+    on<LogoutEvent>(_onLogoutEvent);
+    on<SignUpEmailEvent>(_onSignUpEmail);
   }
 
   final AuthService _authService;
 
-  Future<void> _handleLoginEvent(_, emit) async {
+  Future<void> _onLoginEmailEvent(LoginEmailEvent event, emit) async {
     try {
       emit(const LoadingAuthState());
-      await _authService.login();
+      await _authService.loginWithEmail(
+        email: event.email,
+        password: event.password,
+      );
+
+      // emit(const AuthState.authenticated());
+    } catch (e) {
+      emit(const UnauthenticatedAuthState());
+      rethrow;
+    }
+  }
+
+  Future<void> _onSignUpEmail(SignUpEmailEvent event, emit) async {
+    try {
+      emit(const LoadingAuthState());
+
+      await _authService.signUpWithEmail(
+        email: event.email,
+        password: event.password,
+      );
 
       emit(const AuthState.authenticated());
     } catch (e) {
@@ -43,13 +76,12 @@ class AuthBLoC extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  Future<void> _handleLogoutEvent(_, emit) async {
+  Future<void> _onLogoutEvent(_, emit) async {
     _authService.logout();
-    emit(const UnauthenticatedAuthState());
   }
 
-  Future<void> _handleInitEvent(_, emit) async {
-    final isAuthhoraized = _authService.currentState;
+  Future<void> _onInitEvent(_, emit) async {
+    final isAuthhoraized = _authService.isUserLoggedIn;
     if (isAuthhoraized) {
       emit(const AuthenticatedAuthState());
     } else {

@@ -9,6 +9,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i11;
+import 'package:flutter/material.dart' as _i12;
 import 'package:uah_shelters/src/features/auth/presentation/screens/auth_screen.dart'
     as _i1;
 import 'package:uah_shelters/src/features/auth/presentation/screens/sign_in_screen.dart'
@@ -121,10 +122,13 @@ class ProfileRoute extends _i11.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i6.RegisterMailScreen]
-class RegisterMailRoute extends _i11.PageRouteInfo<void> {
-  const RegisterMailRoute({List<_i11.PageRouteInfo>? children})
-      : super(
+class RegisterMailRoute extends _i11.PageRouteInfo<RegisterMailRouteArgs> {
+  RegisterMailRoute({
+    _i12.Key? key,
+    List<_i11.PageRouteInfo>? children,
+  }) : super(
           RegisterMailRoute.name,
+          args: RegisterMailRouteArgs(key: key),
           initialChildren: children,
         );
 
@@ -133,9 +137,22 @@ class RegisterMailRoute extends _i11.PageRouteInfo<void> {
   static _i11.PageInfo page = _i11.PageInfo(
     name,
     builder: (data) {
-      return const _i6.RegisterMailScreen();
+      final args = data.argsAs<RegisterMailRouteArgs>(
+          orElse: () => const RegisterMailRouteArgs());
+      return _i6.RegisterMailScreen(key: args.key);
     },
   );
+}
+
+class RegisterMailRouteArgs {
+  const RegisterMailRouteArgs({this.key});
+
+  final _i12.Key? key;
+
+  @override
+  String toString() {
+    return 'RegisterMailRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for
@@ -159,10 +176,13 @@ class RegisterNameRoute extends _i11.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i8.SignInScreen]
-class SignInRoute extends _i11.PageRouteInfo<void> {
-  const SignInRoute({List<_i11.PageRouteInfo>? children})
-      : super(
+class SignInRoute extends _i11.PageRouteInfo<SignInRouteArgs> {
+  SignInRoute({
+    _i12.Key? key,
+    List<_i11.PageRouteInfo>? children,
+  }) : super(
           SignInRoute.name,
+          args: SignInRouteArgs(key: key),
           initialChildren: children,
         );
 
@@ -171,9 +191,22 @@ class SignInRoute extends _i11.PageRouteInfo<void> {
   static _i11.PageInfo page = _i11.PageInfo(
     name,
     builder: (data) {
-      return const _i8.SignInScreen();
+      final args =
+          data.argsAs<SignInRouteArgs>(orElse: () => const SignInRouteArgs());
+      return _i8.SignInScreen(key: args.key);
     },
   );
+}
+
+class SignInRouteArgs {
+  const SignInRouteArgs({this.key});
+
+  final _i12.Key? key;
+
+  @override
+  String toString() {
+    return 'SignInRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for

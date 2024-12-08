@@ -1,10 +1,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uah_shelters/src/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:uah_shelters/src/shared/app_colors.dart';
 
 @RoutePage()
 class SignInScreen extends StatelessWidget {
-  const SignInScreen({super.key});
+  SignInScreen({super.key});
+
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -28,16 +33,18 @@ class SignInScreen extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 30),
-                const TextField(
-                  decoration: InputDecoration(
+                TextField(
+                  controller: _emailController,
+                  decoration: const InputDecoration(
                     labelText: 'Email',
                     border: OutlineInputBorder(),
                   ),
                   keyboardType: TextInputType.emailAddress,
                 ),
                 const SizedBox(height: 25),
-                const TextField(
-                  decoration: InputDecoration(
+                TextField(
+                  controller: _passwordController,
+                  decoration: const InputDecoration(
                     labelText: 'Password',
                     border: OutlineInputBorder(),
                   ),
@@ -49,7 +56,17 @@ class SignInScreen extends StatelessWidget {
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.orangeButton),
-                    onPressed: () {},
+                    onPressed: () {
+                      final email = _emailController.value.text;
+                      final password = _passwordController.value.text;
+
+                      context.read<AuthBLoC>().add(
+                            AuthEvent.loginEmail(
+                              email: email,
+                              password: password,
+                            ),
+                          );
+                    },
                     child: const Text(
                       'Sign In',
                       style: TextStyle(color: AppColors.white),

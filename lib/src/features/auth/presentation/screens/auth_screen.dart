@@ -54,7 +54,7 @@ class AuthScreen extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {
-                    context.pushRoute(const SignInRoute());
+                    context.pushRoute(SignInRoute());
                   },
                   child: const Text(
                     'Sign in with email',
