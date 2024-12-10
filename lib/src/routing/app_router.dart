@@ -7,12 +7,10 @@ class AppRouter extends RootStackRouter {
   List<AutoRoute> get routes => [
         AutoRoute(
           initial: true,
-          path: '/',
-          page: AuthGuardRoute.page,
+          page: AuthGuard.page,
           children: [
             AutoRoute(
-              page: MainFlowRoute.page,
-              path: 'mainflow',
+              page: MainFlow.page,
               children: [
                 AutoRoute(
                   initial: true,
@@ -27,56 +25,21 @@ class AppRouter extends RootStackRouter {
               ],
             ),
             AutoRoute(
-                page: AuthNavigatorRoute.page,
-                path: 'autnnavigator',
-                children: [
-                  AutoRoute(
-                    initial: true,
-                    page: AuthRoute.page,
-                    path: 'authflow',
-                  ),
-                  CustomRoute(
-                    page: SignInRoute.page,
-                    path: 'singIn',
-                    transitionsBuilder: TransitionsBuilders.noTransition,
-                  ),
-                  AutoRoute(page: RegisterNameRoute.page),
-                  AutoRoute(page: RegisterMailRoute.page),
-                ]),
+              page: AuthFlow.page,
+              children: [
+                AutoRoute(
+                  initial: true,
+                  page: AuthRoute.page,
+                ),
+                CustomRoute(
+                  page: SignInRoute.page,
+                  transitionsBuilder: TransitionsBuilders.noTransition,
+                ),
+                AutoRoute(page: RegisterNameRoute.page),
+                AutoRoute(page: RegisterMailRoute.page),
+              ],
+            ),
           ],
         ),
       ];
-
-  // @override
-  // late final List<AutoRouteGuard> guards = [
-  //   AutoRouteGuard.simple(
-  //     (resolver, router) {
-  //       final isAuthenticated = getIt<AuthService>().isUserLoggedIn;
-  //       if (isAuthenticated || resolver.routeName == LoginRoute.name) {
-  //         // we continue navigation
-  //         resolver.next();
-  //       } else {
-  //         // else we navigate to the Login page so we get authenticated
-
-  //         // tip: use resolver.redirect to have the redirected route
-  //         // automatically removed from the stack when the resolver is completed
-  //         resolver.redirect(
-  //             LoginRoute(onResult: (didLogin) => resolver.next(didLogin)));
-  //       }
-  //     },
-  //   ),
-  //   // add more guards here
-  // ];
 }
-
-// class AuthGuard extends AutoRouteGuard {
-//   @override
-//   void onNavigation(NavigationResolver resolver, StackRouter router) async {
-//     final isUserLoggedIn = getIt<AuthService>().isUserLoggedIn;
-//     if (isUserLoggedIn) {
-//       resolver.next(true);
-//       return;
-//     }
-//     router.replaceAll([const AuthRoute()]);
-//   }
-// }

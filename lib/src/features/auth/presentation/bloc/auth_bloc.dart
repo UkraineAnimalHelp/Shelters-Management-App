@@ -1,5 +1,3 @@
-// ignore_for_file: inference_failure_on_untyped_parameter
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uah_shelters/src/features/auth/domain/service/auth_service.dart';

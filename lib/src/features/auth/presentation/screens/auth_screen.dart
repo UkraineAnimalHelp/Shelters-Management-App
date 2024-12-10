@@ -4,6 +4,16 @@ import 'package:uah_shelters/src/shared/app_colors.dart';
 import 'package:uah_shelters/src/shared/constants/constants.dart';
 
 @RoutePage()
+class AuthFlow extends StatelessWidget {
+  const AuthFlow({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const AutoRouter();
+  }
+}
+
+@RoutePage()
 class AuthScreen extends StatelessWidget {
   const AuthScreen({super.key});
 

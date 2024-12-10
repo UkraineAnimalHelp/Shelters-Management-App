@@ -5,8 +5,8 @@ import 'package:uah_shelters/src/features/auth/presentation/bloc/auth_bloc.dart'
 import 'package:uah_shelters/src/shared/constants/constants.dart';
 
 @RoutePage()
-class AuthGuardScreen extends StatelessWidget {
-  const AuthGuardScreen({super.key});
+class AuthGuard extends StatelessWidget {
+  const AuthGuard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +15,8 @@ class AuthGuardScreen extends StatelessWidget {
         return AutoRouter.declarative(
           routes: (_) => <PageRouteInfo>[
             switch (state) {
-              UnauthenticatedAuthState() => const AuthNavigatorRoute(),
-              AuthenticatedAuthState() => const MainFlowRoute(),
+              UnauthenticatedAuthState() => const AuthFlow(),
+              AuthenticatedAuthState() => const MainFlow(),
             }
           ],
         );
