@@ -8,12 +8,14 @@ abstract class AuthService {
 
   bool get isUserLoggedIn;
 
-  Future<void> loginWithEmail({
+  AppUser? get currentUser;
+
+  Future<AppUser> loginWithEmail({
     required String email,
     required String password,
   });
 
-  Future<bool> signUpWithEmail({
+  Future<AppUser> signUpWithEmail({
     required String email,
     required String password,
     String? firstName,
@@ -43,12 +45,17 @@ class AuthServiceImpl implements AuthService {
       );
 
   @override
-  Future<void> loginWithEmail({
+  Future<AppUser> loginWithEmail({
     required String email,
     required String password,
   }) async {
-    await FirebaseAuth.instance
-        .signInWithEmailAndPassword(email: email, password: password);
+    final user = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password)
+        .then((creds) => creds.user);
+
+    if (user == null) throw Exception("User can't be null");
+
+    return AppUser(id: user.uid);
   }
 
   @override
@@ -64,7 +71,7 @@ class AuthServiceImpl implements AuthService {
   bool get isUserLoggedIn => FirebaseAuth.instance.currentUser != null;
 
   @override
-  Future<bool> signUpWithEmail({
+  Future<AppUser> signUpWithEmail({
     required String email,
     required String password,
     String? firstName,
@@ -76,8 +83,15 @@ class AuthServiceImpl implements AuthService {
     FirebaseAuth.instance.currentUser
         ?.updateDisplayName([firstName, lastName].join(' '));
 
-    return true;
+    final user = currentUser;
+
+    if (user == null) throw Exception("User can't be null");
+
+    return user;
   }
+
+  @override
+  AppUser? get currentUser => AppUser.from(FirebaseAuth.instance.currentUser);
 }
 
 class AppUser {
@@ -90,4 +104,14 @@ class AppUser {
   final String? id;
   final String? displayName;
   final String? email;
+
+  static AppUser? from(User? user) {
+    if (user == null) return null;
+
+    return AppUser(
+      id: user.uid,
+      displayName: user.displayName,
+      email: user.email,
+    );
+  }
 }

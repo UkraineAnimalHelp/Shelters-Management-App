@@ -1,5 +1,7 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
 import 'package:uah_shelters/src/features/auth/domain/service/auth_service.dart';
 
 part 'auth_bloc.freezed.dart';
@@ -20,17 +22,33 @@ class AuthEvent with _$AuthEvent {
   const factory AuthEvent.logout() = LogoutEvent;
 }
 
-sealed class AuthState {
-  // const factory AuthState.initial() = InitialAuthState;
-  // const factory AuthState.loading() = LoadingAuthState;
-  const factory AuthState.authenticated() = AuthenticatedAuthState;
-  const factory AuthState.unauthenticated() = UnauthenticatedAuthState;
+class AuthState {
+  AuthState({
+    required this.user,
+    this.isLoading = false,
+  });
+
+  final AppUser? user;
+  final bool isLoading;
+
+  factory AuthState.loggedOut() {
+    return AuthState(user: null);
+  }
+
+  AuthState copyWith({
+    AppUser? Function()? user,
+    bool? isLoading,
+  }) {
+    return AuthState(
+      user: user != null ? user() : this.user,
+      isLoading: isLoading ?? this.isLoading,
+    );
+  }
 }
 
 class AuthBLoC extends Bloc<AuthEvent, AuthState> {
-  AuthBLoC(this._authService) : super(const UnauthenticatedAuthState()) {
-    // TODO(avdonin): [] add subscription
-
+  AuthBLoC(this._authService)
+      : super(AuthState(user: _authService.currentUser)) {
     _authService.authStream.listen(
       (user) => add(const AuthEvent.init()),
     );
@@ -45,31 +63,33 @@ class AuthBLoC extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _onLoginEmailEvent(LoginEmailEvent event, emit) async {
     try {
-      // emit(const LoadingAuthState());
-      await _authService.loginWithEmail(
+      emit(state.copyWith(isLoading: true));
+
+      final user = await _authService.loginWithEmail(
         email: event.email,
         password: event.password,
       );
 
-      emit(const AuthState.authenticated());
+      emit(AuthState(user: user, isLoading: false));
     } catch (e) {
-      emit(const UnauthenticatedAuthState());
+      emit(state.copyWith(isLoading: false, user: () => null));
+
       rethrow;
     }
   }
 
   Future<void> _onSignUpEmail(SignUpEmailEvent event, emit) async {
     try {
-      //emit(const LoadingAuthState());
+      emit(state.copyWith(isLoading: true));
 
-      await _authService.signUpWithEmail(
+      final user = await _authService.signUpWithEmail(
         email: event.email,
         password: event.password,
       );
 
-      emit(const AuthState.authenticated());
+      emit(AuthState(user: user, isLoading: false));
     } catch (e) {
-      emit(const UnauthenticatedAuthState());
+      emit(state.copyWith(isLoading: false, user: () => null));
       rethrow;
     }
   }
@@ -79,27 +99,7 @@ class AuthBLoC extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _onInitEvent(_, emit) async {
-    final isAuthhoraized = _authService.isUserLoggedIn;
-    if (isAuthhoraized) {
-      emit(const AuthenticatedAuthState());
-    } else {
-      emit(const UnauthenticatedAuthState());
-    }
+    final user = _authService.currentUser;
+    emit(state.copyWith(user: () => user));
   }
-}
-
-// class InitialAuthState implements AuthState {
-//   const InitialAuthState();
-// }
-
-// class LoadingAuthState implements AuthState {
-//   const LoadingAuthState();
-// }
-
-class AuthenticatedAuthState implements AuthState {
-  const AuthenticatedAuthState();
-}
-
-class UnauthenticatedAuthState implements AuthState {
-  const UnauthenticatedAuthState();
 }

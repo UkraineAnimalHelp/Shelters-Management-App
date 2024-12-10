@@ -9,8 +9,9 @@ class AppRouter extends RootStackRouter {
           initial: true,
           page: AuthGuard.page,
           children: [
-            AutoRoute(
+            CustomRoute(
               page: MainFlow.page,
+              transitionsBuilder: TransitionsBuilders.noTransition,
               children: [
                 AutoRoute(
                   initial: true,
@@ -27,14 +28,8 @@ class AppRouter extends RootStackRouter {
             AutoRoute(
               page: AuthFlow.page,
               children: [
-                AutoRoute(
-                  initial: true,
-                  page: AuthRoute.page,
-                ),
-                CustomRoute(
-                  page: SignInRoute.page,
-                  transitionsBuilder: TransitionsBuilders.noTransition,
-                ),
+                AutoRoute(initial: true, page: AuthRoute.page),
+                AutoRoute(page: SignInRoute.page),
                 AutoRoute(page: RegisterNameRoute.page),
                 AutoRoute(page: RegisterMailRoute.page),
               ],
