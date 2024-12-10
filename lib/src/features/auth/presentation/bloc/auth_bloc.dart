@@ -23,14 +23,14 @@ class AuthEvent with _$AuthEvent {
 }
 
 sealed class AuthState {
-  const factory AuthState.initial() = InitialAuthState;
-  const factory AuthState.loading() = LoadingAuthState;
+  // const factory AuthState.initial() = InitialAuthState;
+  // const factory AuthState.loading() = LoadingAuthState;
   const factory AuthState.authenticated() = AuthenticatedAuthState;
   const factory AuthState.unauthenticated() = UnauthenticatedAuthState;
 }
 
 class AuthBLoC extends Bloc<AuthEvent, AuthState> {
-  AuthBLoC(this._authService) : super(const LoadingAuthState()) {
+  AuthBLoC(this._authService) : super(const UnauthenticatedAuthState()) {
     // TODO(avdonin): [] add subscription
 
     _authService.authStream.listen(
@@ -47,13 +47,13 @@ class AuthBLoC extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _onLoginEmailEvent(LoginEmailEvent event, emit) async {
     try {
-      emit(const LoadingAuthState());
+      // emit(const LoadingAuthState());
       await _authService.loginWithEmail(
         email: event.email,
         password: event.password,
       );
 
-      // emit(const AuthState.authenticated());
+      emit(const AuthState.authenticated());
     } catch (e) {
       emit(const UnauthenticatedAuthState());
       rethrow;
@@ -62,7 +62,7 @@ class AuthBLoC extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _onSignUpEmail(SignUpEmailEvent event, emit) async {
     try {
-      emit(const LoadingAuthState());
+      //emit(const LoadingAuthState());
 
       await _authService.signUpWithEmail(
         email: event.email,
@@ -90,13 +90,13 @@ class AuthBLoC extends Bloc<AuthEvent, AuthState> {
   }
 }
 
-class InitialAuthState implements AuthState {
-  const InitialAuthState();
-}
+// class InitialAuthState implements AuthState {
+//   const InitialAuthState();
+// }
 
-class LoadingAuthState implements AuthState {
-  const LoadingAuthState();
-}
+// class LoadingAuthState implements AuthState {
+//   const LoadingAuthState();
+// }
 
 class AuthenticatedAuthState implements AuthState {
   const AuthenticatedAuthState();

@@ -15,17 +15,17 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => AuthBLoC(getIt.get<AuthService>()),
       child: BlocListener<AuthBLoC, AuthState>(
+        //listenWhen: (_, current) => current is! LoadingAuthState,
         listener: (context, state) {
-          switch (state) {
-            case (UnauthenticatedAuthState()):
-              _appRouter.replaceAll([const AuthRoute()]);
-
-            case (AuthenticatedAuthState()):
-              _appRouter.replaceAll([const StartRoute()]);
-
-            default:
-              break;
-          }
+          // switch (state) {
+          //   case AuthenticatedAuthState():
+          //     _appRouter.replaceAll([const StartRoute()]);
+          //   case UnauthenticatedAuthState():
+          //     _appRouter.replaceAll(
+          //       [const AuthRoute()],
+          //     );
+          //   default:
+          // }
         },
         child: MaterialApp.router(
           routerConfig: _appRouter.config(),

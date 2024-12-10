@@ -1,25 +1,48 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:uah_shelters/di.dart';
-import 'package:uah_shelters/src/features/auth/domain/service/auth_service.dart';
 import 'app_router.gr.dart';
 
 @AutoRouterConfig(replaceInRouteName: 'Page|Screen,Route')
 class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
-        AutoRoute(page: AuthRoute.page),
-        AutoRoute(page: SignInRoute.page),
-        AutoRoute(page: RegisterNameRoute.page),
-        AutoRoute(page: RegisterMailRoute.page),
         AutoRoute(
-          page: StartRoute.page,
-          guards: [AuthGuard()],
           initial: true,
+          path: '/',
+          page: AuthGuardRoute.page,
           children: [
-            AutoRoute(page: TasksRoute.page),
-            AutoRoute(page: MyAnimalsRoute.page),
-            AutoRoute(page: ProfileRoute.page),
-            AutoRoute(page: CalendarRoute.page),
+            AutoRoute(
+              page: MainFlowRoute.page,
+              path: 'mainflow',
+              children: [
+                AutoRoute(
+                  initial: true,
+                  page: StartRoute.page,
+                  children: [
+                    AutoRoute(page: TasksRoute.page),
+                    AutoRoute(page: MyAnimalsRoute.page),
+                    AutoRoute(page: ProfileRoute.page),
+                    AutoRoute(page: CalendarRoute.page),
+                  ],
+                ),
+              ],
+            ),
+            AutoRoute(
+                page: AuthNavigatorRoute.page,
+                path: 'autnnavigator',
+                children: [
+                  AutoRoute(
+                    initial: true,
+                    page: AuthRoute.page,
+                    path: 'authflow',
+                  ),
+                  CustomRoute(
+                    page: SignInRoute.page,
+                    path: 'singIn',
+                    transitionsBuilder: TransitionsBuilders.noTransition,
+                  ),
+                  AutoRoute(page: RegisterNameRoute.page),
+                  AutoRoute(page: RegisterMailRoute.page),
+                ]),
           ],
         ),
       ];
@@ -46,14 +69,14 @@ class AppRouter extends RootStackRouter {
   // ];
 }
 
-class AuthGuard extends AutoRouteGuard {
-  @override
-  void onNavigation(NavigationResolver resolver, StackRouter router) async {
-    final isUserLoggedIn = getIt<AuthService>().isUserLoggedIn;
-    if (isUserLoggedIn) {
-      resolver.next(true);
-      return;
-    }
-    router.replaceAll([const AuthRoute()]);
-  }
-}
+// class AuthGuard extends AutoRouteGuard {
+//   @override
+//   void onNavigation(NavigationResolver resolver, StackRouter router) async {
+//     final isUserLoggedIn = getIt<AuthService>().isUserLoggedIn;
+//     if (isUserLoggedIn) {
+//       resolver.next(true);
+//       return;
+//     }
+//     router.replaceAll([const AuthRoute()]);
+//   }
+// }

@@ -8,8 +8,8 @@ import 'package:uah_shelters/src/shared/app_colors.dart';
 class SignInScreen extends StatelessWidget {
   SignInScreen({super.key});
 
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final _emailController = TextEditingController(text: 'onlytarg@gmail.com');
+  final _passwordController = TextEditingController(text: '12345678');
 
   @override
   Widget build(BuildContext context) {

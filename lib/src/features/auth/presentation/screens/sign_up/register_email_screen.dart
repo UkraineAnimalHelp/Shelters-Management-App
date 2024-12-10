@@ -66,9 +66,9 @@ class RegisterMailScreen extends StatelessWidget {
                 child: BlocBuilder<AuthBLoC, AuthState>(
                   builder: (context, state) {
                     return switch (state) {
-                      LoadingAuthState() => const Center(
-                          child: CircularProgressIndicator(),
-                        ),
+                      // LoadingAuthState() => const Center(
+                      //     child: CircularProgressIndicator(),
+                      //   ),
                       _ => const Text(
                           'Create account',
                           style: TextStyle(color: AppColors.white),
