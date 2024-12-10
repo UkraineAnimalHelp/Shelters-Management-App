@@ -36,6 +36,7 @@ class AuthServiceImpl implements AuthService {
   Stream<AppUser?> get authStream => FirebaseAuth.instance.userChanges().map(
         (user) {
           if (user == null) return null;
+
           return AppUser(
             id: user.uid,
             displayName: user.displayName,

@@ -87,20 +87,3 @@ class RegisterMailScreen extends StatelessWidget {
     );
   }
 }
-
-class SignUpPage extends StatelessWidget {
-  const SignUpPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sign Up'),
-        centerTitle: true,
-      ),
-      body: const Center(
-        child: Text('Sign-Up Page (To Be Implemented)'),
-      ),
-    );
-  }
-}

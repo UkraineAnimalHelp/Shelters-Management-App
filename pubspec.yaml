@@ -55,9 +55,7 @@ dependencies:
   permission_handler: ^11.3.1
   shared_preferences: ^2.3.3
   get_it: ^8.0.2
-  freezed: ^2.5.7
   flutter_bloc: ^8.1.6
-  freezed_annotation: ^2.4.4
 
 dev_dependencies:
   flutter_test:
