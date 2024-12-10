@@ -10,7 +10,7 @@
 .svn/
 migrate_working_dir/
 coverage/
-
+lib/my-define.json
 # IntelliJ related
 *.iml
 *.ipr
