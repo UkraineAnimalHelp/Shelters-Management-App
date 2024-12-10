@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uah_shelters/src/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:uah_shelters/src/features/auth/presentation/bloc/auth_state.dart';
 import 'package:uah_shelters/src/shared/app_colors.dart';
 import 'package:uah_shelters/src/shared/env_values.dart';
 
@@ -56,21 +57,33 @@ class SignInScreen extends StatelessWidget {
                   width: double.infinity,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.orangeButton),
+                        backgroundColor: AppColors.orange),
                     onPressed: () {
                       final email = _emailController.value.text;
                       final password = _passwordController.value.text;
 
-                      context.read<AuthBLoC>().add(
-                            AuthEvent.loginEmail(
-                              email: email,
-                              password: password,
-                            ),
+                      context.read<AuthCubit>().loginWithEmail(
+                            email: email,
+                            password: password,
                           );
                     },
-                    child: const Text(
-                      'Sign In',
-                      style: TextStyle(color: AppColors.white),
+                    child: BlocSelector<AuthCubit, AuthState, bool>(
+                      selector: (state) => state.isLoading,
+                      builder: (context, isLoading) {
+                        return isLoading
+                            ? const SizedBox(
+                                height: 25,
+                                width: 25,
+                                child: CircularProgressIndicator(
+                                  color: AppColors.white,
+                                  strokeWidth: 3,
+                                ),
+                              )
+                            : const Text(
+                                'Sign In',
+                                style: TextStyle(color: AppColors.white),
+                              );
+                      },
                     ),
                   ),
                 ),

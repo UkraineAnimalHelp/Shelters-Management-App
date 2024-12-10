@@ -54,8 +54,29 @@ class AuthScreen extends StatelessWidget {
                   width: double.infinity,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.orangeButton),
-                    onPressed: () {},
+                        backgroundColor: AppColors.orange),
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: AppColors.orange,
+                          behavior: SnackBarBehavior.floating,
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 10),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          content: const Center(
+                              child: Text(
+                            'В розробці, спробуйте через email',
+                            style: TextStyle(fontSize: 20),
+                            textAlign: TextAlign.center,
+                          )),
+                          duration: const Duration(seconds: 2),
+                        ),
+                      );
+                    },
                     child: const Text(
                       'Sign in with Google',
                       style: TextStyle(color: AppColors.white),
@@ -68,7 +89,7 @@ class AuthScreen extends StatelessWidget {
                   },
                   child: const Text(
                     'Sign in with email',
-                    style: TextStyle(color: AppColors.orangeButton),
+                    style: TextStyle(color: AppColors.orange),
                   ),
                 ),
               ],
@@ -92,7 +113,7 @@ class AuthScreen extends StatelessWidget {
                   child: const Text(
                     'Sign Up here',
                     style: TextStyle(
-                      color: AppColors.orangeButton,
+                      color: AppColors.orange,
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                     ),

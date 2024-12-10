@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uah_shelters/src/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:uah_shelters/src/features/auth/presentation/bloc/auth_state.dart';
 import 'package:uah_shelters/src/shared/app_colors.dart';
 
 @RoutePage()
@@ -53,27 +54,29 @@ class RegisterMailScreen extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.orangeButton),
-                onPressed: () {
-                  final email = _emailController.value.text;
-                  final password = _passwordController.value.text;
-                  context.read<AuthBLoC>().add(AuthEvent.signUpEmail(
-                        email: email,
-                        password: password,
-                      ));
-                },
-                child: BlocBuilder<AuthBLoC, AuthState>(
-                  builder: (context, state) {
-                    return switch (state) {
-                      // LoadingAuthState() => const Center(
-                      //     child: CircularProgressIndicator(),
-                      //   ),
-                      _ => const Text(
-                          'Create account',
-                          style: TextStyle(color: AppColors.white),
-                        )
-                    };
+                style:
+                    ElevatedButton.styleFrom(backgroundColor: AppColors.orange),
+                onPressed: () => context.read<AuthCubit>().signUpWithEmail(
+                      email: _emailController.value.text,
+                      password: _passwordController.value.text,
+                    ),
+                child: BlocSelector<AuthCubit, AuthState, bool>(
+                  selector: (state) => state.isLoading,
+                  builder: (context, isLoading) {
+                    if (isLoading) {
+                      return const SizedBox(
+                        height: 25,
+                        width: 25,
+                        child: CircularProgressIndicator(
+                          color: AppColors.white,
+                          strokeWidth: 3,
+                        ),
+                      );
+                    }
+                    return const Text(
+                      'Create account',
+                      style: TextStyle(color: AppColors.white),
+                    );
                   },
                 ),
               ),

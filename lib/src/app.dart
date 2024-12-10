@@ -13,24 +13,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AuthBLoC(getIt.get<AuthService>()),
-      child: BlocListener<AuthBLoC, AuthState>(
-        //listenWhen: (_, current) => current is! LoadingAuthState,
-        listener: (context, state) {
-          // switch (state) {
-          //   case AuthenticatedAuthState():
-          //     _appRouter.replaceAll([const StartRoute()]);
-          //   case UnauthenticatedAuthState():
-          //     _appRouter.replaceAll(
-          //       [const AuthRoute()],
-          //     );
-          //   default:
-          // }
-        },
-        child: MaterialApp.router(
-          routerConfig: _appRouter.config(),
-          debugShowCheckedModeBanner: false,
-        ),
+      create: (context) => AuthCubit(getIt.get<AuthService>()),
+      child: MaterialApp.router(
+        routerConfig: _appRouter.config(),
+        debugShowCheckedModeBanner: false,
       ),
     );
   }

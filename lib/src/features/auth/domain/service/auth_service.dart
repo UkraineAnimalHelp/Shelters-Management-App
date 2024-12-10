@@ -22,7 +22,7 @@ abstract class AuthService {
     String? lastName,
   });
 
-  void logout();
+  Future<void> logout();
 
   void dispose();
 }

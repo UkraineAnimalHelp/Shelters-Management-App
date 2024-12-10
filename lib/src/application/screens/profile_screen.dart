@@ -11,9 +11,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: TextButton(
-        onPressed: () {
-          context.read<AuthBLoC>().add(const AuthEvent.logout());
-        },
+        onPressed: () => context.read<AuthCubit>().logout(),
         child: const Text(
           'Logout',
           style: TextStyle(fontSize: 20),
