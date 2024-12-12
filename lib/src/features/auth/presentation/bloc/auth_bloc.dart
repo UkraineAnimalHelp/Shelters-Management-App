@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uah_shelters/src/features/auth/domain/service/auth_service.dart';
 import 'package:uah_shelters/src/features/auth/presentation/bloc/auth_state.dart';
 
+// TODO(avdonin): Need add all cases for error handling
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit(this._authService)
       : super(AuthState(user: _authService.currentUser)) {
@@ -32,7 +33,7 @@ class AuthCubit extends Cubit<AuthState> {
 
       emit(AuthState(user: user, isLoading: false));
     } catch (e) {
-      emit(state.copyWith(isLoading: false, user: () => null));
+      emit(AuthState.unauthrized());
 
       rethrow;
     }
@@ -52,7 +53,7 @@ class AuthCubit extends Cubit<AuthState> {
 
       emit(AuthState(user: user, isLoading: false));
     } catch (e) {
-      emit(state.copyWith(isLoading: false, user: () => null));
+      emit(AuthState.unauthrized());
 
       rethrow;
     }
@@ -61,7 +62,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> logout() async {
     unawaited(_authService.logout());
 
-    emit(AuthState(user: null));
+    emit(AuthState.unauthrized());
   }
 
   @override

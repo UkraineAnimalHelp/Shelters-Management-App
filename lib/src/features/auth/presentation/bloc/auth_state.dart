@@ -18,4 +18,8 @@ class AuthState {
       isLoading: isLoading ?? this.isLoading,
     );
   }
+
+  factory AuthState.unauthrized() {
+    return AuthState(user: null, isLoading: false);
+  }
 }
