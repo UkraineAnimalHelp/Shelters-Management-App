@@ -22,7 +22,7 @@ import 'package:uah_shelters/src/application/screens/start_page.dart' as _i11;
 import 'package:uah_shelters/src/application/screens/tasks_screen.dart' as _i12;
 import 'package:uah_shelters/src/features/auth/presentation/screens/auth_guard.dart'
     as _i2;
-import 'package:uah_shelters/src/features/auth/presentation/screens/auth_screen.dart'
+import 'package:uah_shelters/src/features/auth/presentation/screens/auth_flow.dart'
     as _i1;
 import 'package:uah_shelters/src/features/auth/presentation/screens/sign_in/sign_in_screen.dart'
     as _i10;

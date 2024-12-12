@@ -1,7 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uah_shelters/src/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:uah_shelters/src/features/auth/presentation/bloc/auth_state.dart';
 import 'package:uah_shelters/src/shared/app_colors.dart';
 import 'package:uah_shelters/src/shared/constants/constants.dart';
+import 'package:uah_shelters/src/shared/ui/snack_bars/snack_bars.dart';
 
 @RoutePage()
 class AuthFlow extends StatelessWidget {
@@ -9,7 +13,16 @@ class AuthFlow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const AutoRouter();
+    return BlocListener<AuthCubit, AuthState>(
+      listenWhen: (previous, current) => current.exception != null,
+      listener: (context, state) {
+        showSnackBar(
+          context: context,
+          message: 'Something went wrong',
+        );
+      },
+      child: const AutoRouter(),
+    );
   }
 }
 
@@ -56,26 +69,7 @@ class AuthScreen extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.orange),
                     onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          backgroundColor: AppColors.orange,
-                          behavior: SnackBarBehavior.floating,
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 10),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 5),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          content: const Center(
-                              child: Text(
-                            'В розробці, спробуйте через email',
-                            style: TextStyle(fontSize: 20),
-                            textAlign: TextAlign.center,
-                          )),
-                          duration: const Duration(seconds: 2),
-                        ),
-                      );
+                      showSnackBar(context: context, message: 'Coming soon');
                     },
                     child: const Text(
                       'Sign in with Google',

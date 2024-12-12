@@ -1,6 +1,6 @@
-class AuthExceptions implements Exception {
+class AuthException implements Exception {
   final String message;
-  AuthExceptions(this.message);
+  AuthException(this.message);
 }
 
 enum ExceptionType {

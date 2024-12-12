@@ -31,9 +31,9 @@ class AuthCubit extends Cubit<AuthState> {
         password: password,
       );
 
-      emit(AuthState(user: user, isLoading: false));
+      emit(AuthState.authrized(user));
     } catch (e) {
-      emit(AuthState.unauthrized());
+      emit(AuthState.error());
 
       rethrow;
     }
@@ -51,9 +51,9 @@ class AuthCubit extends Cubit<AuthState> {
         password: password,
       );
 
-      emit(AuthState(user: user, isLoading: false));
+      emit(AuthState.authrized(user));
     } catch (e) {
-      emit(AuthState.unauthrized());
+      emit(AuthState.error());
 
       rethrow;
     }
@@ -62,7 +62,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> logout() async {
     unawaited(_authService.logout());
 
-    emit(AuthState.unauthrized());
+    emit(AuthState.error());
   }
 
   @override
