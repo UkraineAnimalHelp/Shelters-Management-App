@@ -3,8 +3,13 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uah_shelters/src/shared/storage/storage_keys.dart';
 
 abstract class AppKeyValueStorage {
+  Future<bool> setOrganizationId(String organizationId);
+
+  String? getOrganizationId();
+
   Future<void> clear();
 }
 
@@ -59,4 +64,15 @@ class AppKeyValueStorageImpl implements AppKeyValueStorage {
 
   @override
   Future<void> clear() => _preferences.clear();
+
+  @override
+  String? getOrganizationId() {
+    return _preferences.getString(LocalStorageKeys.organizationId);
+  }
+
+  @override
+  Future<bool> setOrganizationId(String organizationId) {
+    return _preferences.setString(
+        LocalStorageKeys.organizationId, organizationId);
+  }
 }

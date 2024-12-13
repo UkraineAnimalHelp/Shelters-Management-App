@@ -1,4 +1,6 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:uah_shelters/di.dart';
+import 'package:uah_shelters/src/shared/storage/app_storage.dart';
 import 'app_router.gr.dart';
 
 @AutoRouterConfig(replaceInRouteName: 'Page|Screen,Route')
@@ -15,6 +17,7 @@ class AppRouter extends RootStackRouter {
               children: [
                 AutoRoute(
                   initial: true,
+                  guards: [HomeScreenGuard()],
                   page: StartRoute.page,
                   children: [
                     AutoRoute(page: TasksRoute.page),
@@ -23,6 +26,7 @@ class AppRouter extends RootStackRouter {
                     AutoRoute(page: CalendarRoute.page),
                   ],
                 ),
+                AutoRoute(page: OrganizationRoute.page),
               ],
             ),
             AutoRoute(
@@ -37,4 +41,19 @@ class AppRouter extends RootStackRouter {
           ],
         ),
       ];
+}
+
+class HomeScreenGuard extends AutoRouteGuard {
+  @override
+  void onNavigation(NavigationResolver resolver, StackRouter router) {
+    final organizationId = getIt<AppKeyValueStorage>().getOrganizationId();
+
+    if (organizationId != null && organizationId.isNotEmpty) {
+      resolver.next(true);
+    } else {
+      resolver.redirect(
+        OrganizationRoute(onOrganizationCreated: resolver.next),
+      );
+    }
+  }
 }
